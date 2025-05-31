@@ -1,0 +1,366 @@
+@import './fonts/fonts.css';
+@import './iconsBlack.css';
+@import './iconsWhite.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* TODO разнести иконки и шрифты по другим папкам */
+/* TODO положить шрифты в отдельную папку */
+
+body {
+  overflow-x: hidden;
+}
+
+input[type='checkbox'] {
+  -webkit-appearance: none; /* Сбросим стиль по умолчанию */
+  border-color: #d6d7d8;
+  margin-block: auto;
+  border-radius: 4px;
+  appearance: none;
+}
+
+/* Стилизуем чекбокс */
+input[type='checkbox']:checked {
+  background-color: #007bff; /* Цвет фона при выборе */
+  border-radius: 4px; /* Радиус углов */
+}
+
+input[type='checkbox']:focus {
+  outline: none; /* Убираем контур при фокусе */
+}
+
+/* Добавляем стили для стилизации чекбокса */
+
+input[type='checkbox']:checked::before {
+  transform: scale(1, 1); /* Изменяем размер */
+}
+
+@layer base {
+  @media (min-width: 1600px) {
+    .H1 {
+      font-family: Gilroy;
+      color: #2a2a2a;
+      font-weight: 700;
+      font-size: 72px;
+      line-height: 100%;
+    }
+    .H2 {
+      font-family: Gilroy;
+      font-weight: 700;
+      font-size: 56px;
+      line-height: 110%;
+    }
+    .H3 {
+      font-family: Gilroy;
+      font-weight: 500;
+      font-size: 40px;
+      line-height: 100%;
+    }
+    .H4 {
+      font-family: Gilroy;
+      font-weight: 500;
+      font-size: 32px;
+      line-height: 100%;
+    }
+    .H5 {
+      font-family: Gilroy;
+      font-weight: 500;
+      font-size: 28px;
+      line-height: 100%;
+    }
+    .H6 {
+      font-family: Gilroy;
+      font-weight: 400;
+      font-size: 28px;
+      line-height: 100%;
+    }
+    .H7 {
+      font-family: Gilroy;
+      font-weight: 400;
+      font-size: 24px;
+      line-height: 100%;
+    }
+    .H8 {
+      font-family: Gilroy;
+      font-weight: 700;
+      font-size: 22px;
+      line-height: 100%;
+    }
+
+    .p1 {
+      font-family: Gilroy;
+      font-weight: 500;
+      font-size: 18px;
+      line-height: 120%;
+    }
+
+    .p2 {
+      font-family: Gilroy;
+      font-weight: 500;
+      font-size: 16px;
+      line-height: 120%;
+    }
+
+    .p3 {
+      font-family: Gilroy;
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 100%;
+    }
+
+    .button1 {
+      font-family: Gilroy;
+      font-weight: 600;
+      font-size: 16px;
+      line-height: 120%;
+    }
+
+    .button2 {
+      font-family: Gilroy;
+      font-weight: 500;
+      font-size: 16px;
+      line-height: 140%;
+    }
+    .input {
+      font-family: Gilroy;
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 140%;
+    }
+    .label1 {
+      font-family: Gilroy;
+      font-weight: 700;
+      font-size: 16px;
+      line-height: 100%;
+    }
+    .label2 {
+      font-family: Gilroy;
+      font-weight: 600;
+      font-size: 12px;
+      line-height: 100%;
+    }
+  }
+
+  @media (min-width: 640px) and (max-width: 1599px) {
+    .H1 {
+      font-family: Gilroy;
+      color: #2a2a2a;
+      font-weight: 700;
+      font-size: 40px;
+      line-height: 100%;
+    }
+    .H2 {
+      font-family: Gilroy;
+      font-weight: 700;
+      font-size: 32px;
+      line-height: 110%;
+    }
+    .H3 {
+      font-family: Gilroy;
+      font-weight: 500;
+      font-size: 32px;
+      line-height: 100%;
+    }
+    .H4 {
+      font-family: Gilroy;
+      font-weight: 500;
+      font-size: 32px;
+      line-height: 100%;
+    }
+    .H5 {
+      font-family: Gilroy;
+      font-weight: 500;
+      font-size: 24px;
+      line-height: 100%;
+    }
+    .H6 {
+      font-family: Gilroy;
+      font-weight: 400;
+      font-size: 24px;
+      line-height: 100%;
+    }
+    .H7 {
+      font-family: Gilroy;
+      font-weight: 500;
+      font-size: 20px;
+      line-height: 100%;
+    }
+    .H8 {
+      font-family: Gilroy;
+      font-weight: 500;
+      font-size: 18px;
+      line-height: 100%;
+    }
+
+    .p1 {
+      font-family: Gilroy;
+      font-weight: 500;
+      font-size: 18px;
+      line-height: 120%;
+    }
+
+    .p2 {
+      font-family: Gilroy;
+      font-weight: 500;
+      font-size: 16px;
+      line-height: 120%;
+    }
+
+    .p3 {
+      font-family: Gilroy;
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 100%;
+    }
+
+    .button1 {
+      font-family: Gilroy;
+      font-weight: 600;
+      font-size: 14px;
+      line-height: 120%;
+    }
+
+    .button2 {
+      font-family: Gilroy;
+      font-weight: 500;
+      font-size: 16px;
+      line-height: 140%;
+    }
+    .input {
+      font-family: Gilroy;
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 140%;
+    }
+    .label1 {
+      font-family: Gilroy;
+      font-weight: 600;
+      font-size: 14px;
+      line-height: 100%;
+    }
+    .label2 {
+      font-family: Gilroy;
+      font-weight: 400;
+      font-size: 10px;
+      line-height: 100%;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    input[type='checkbox'] {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  @media (max-width: 639px) {
+    input[type='checkbox'] {
+      width: 10px;
+      height: 10px;
+    }
+    .H1 {
+      font-family: Gilroy;
+      font-weight: 700;
+      color: #2a2a2a;
+      font-size: 32px;
+      line-height: 100%;
+    }
+    .H2 {
+      font-family: Gilroy;
+      font-weight: 700;
+      font-size: 28px;
+      line-height: 110%;
+    }
+    .H3 {
+      font-family: Gilroy;
+      font-weight: 500;
+      font-size: 24px;
+      line-height: 100%;
+    }
+    .H4 {
+      font-family: Gilroy;
+      font-weight: 700;
+      font-size: 24px;
+      line-height: 100%;
+    }
+    .H5 {
+      font-family: Gilroy;
+      font-weight: 500;
+      font-size: 20px;
+      line-height: 100%;
+    }
+    .H6 {
+      font-family: Gilroy;
+      font-weight: 400;
+      font-size: 20px;
+      line-height: 100%;
+    }
+    .H7 {
+      font-family: Gilroy;
+      font-weight: 500;
+      font-size: 16px;
+      line-height: 100%;
+    }
+    .H8 {
+      font-family: Gilroy;
+      font-weight: 500;
+      font-size: 16px;
+      line-height: 100%;
+    }
+
+    .p1 {
+      font-family: Gilroy;
+      font-weight: 500;
+      font-size: 18px;
+      line-height: 120%;
+    }
+
+    .p2 {
+      font-family: Gilroy;
+      font-weight: 500;
+      font-size: 16px;
+      line-height: 120%;
+    }
+
+    .p3 {
+      font-family: Gilroy;
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 100%;
+    }
+
+    .button1 {
+      font-family: Gilroy;
+      font-weight: 600;
+      font-size: 14px;
+      line-height: 120%;
+    }
+
+    .button2 {
+      font-family: Gilroy;
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 140%;
+    }
+    .input {
+      font-family: Gilroy;
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 140%;
+    }
+    .label1 {
+      font-family: Gilroy;
+      font-weight: 700;
+      font-size: 10px;
+      line-height: 100%;
+    }
+    .label2 {
+      font-family: Gilroy;
+      font-weight: 500;
+      font-size: 10px;
+      line-height: 100%;
+    }
+  }
+}
