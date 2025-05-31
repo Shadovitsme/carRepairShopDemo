@@ -28,9 +28,16 @@ jobs:
           node-version: 18
           
       - name: Install and Build
+        id: build
         run: |
           npm ci
           npm run build
+
+      - name: Upload static files as artifact
+        id: upload
+        uses: actions/upload-pages-artifact@v3 # or specific "vX.X.X" version tag for this action
+        with:
+          path: dist/
 
       - name: Deploy to GitHub Pages
         id: deployment
