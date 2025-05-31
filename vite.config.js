@@ -7,6 +7,7 @@ import tailwindcss from 'tailwindcss' // Импорт Tailwind CSS
 import autoprefixer from 'autoprefixer' // Импорт Autoprefixer
 
 export default defineConfig({
+  base: './',
   plugins: [vue(), vueDevTools()],
   css: {
     postcss: {
