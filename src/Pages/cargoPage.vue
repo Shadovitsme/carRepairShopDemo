@@ -41,7 +41,7 @@ let minQuantityForDiscount = ref(0)
 
 function AddOneItem() {
   counted.value++
-  document.cookie = article + '=' + counted.value + ';path=/;'
+  document.cookie = art.value + '=' + counted.value + ';path=/;'
 }
 
 function RemoveOne() {
@@ -50,19 +50,18 @@ function RemoveOne() {
     counted.value = 0
     toBusk.value = true
   }
-  document.cookie = article + '=' + counted.value + ';path=/;'
+  document.cookie = art.value + '=' + counted.value + ';path=/;'
 }
 
 function addToBusket() {
   toBusk.value = false
   counted.value = 1
-  document.cookie = article + '=' + counted.value + ';path=/;'
+  document.cookie = art.value + '=' + counted.value + ';path=/;'
 }
-// const currentPrice = ref(0)
+const currentPrice = ref(0)
 // name = categoryNames.name
-// img = categoryNames.image
-// price = categoryNames.price
-// currentPrice.value = price
+price = getCargo.value(art.value).price
+currentPrice.value = (getCargo.value(art.value).price)
 // article = categoryNames.article
 // characteristic = categoryNames.graduation
 // size = categoryNames.size
@@ -71,22 +70,22 @@ function addToBusket() {
 // manufacturer = categoryNames.manufacturer
 // color = categoryNames.cargo
 // countImg = categoryNames.img_count
-// counted.value = getCookie(String(article))
-// toBusk.value = !(counted.value > 0)
-// minQuantityForDiscount.value = categoryNames.min_discount_quantity
-// discountPrice.value = rounded((price / 100) * categoryNames.discountPrice)
+counted.value = getCookie(String(art.value))
+toBusk.value = !(counted.value > 0)
+minQuantityForDiscount.value = (getCargo.value(art.value).min_discount_quantity)
+discountPrice.value = rounded((price / 100) * getCargo.value(art.value).discount_price)
 
-const summ = ref(0)
-//  watch(counted, (newValue) => {
-//    if (newValue >= minQuantityForDiscount.value) {
-//      summ.value = rounded(discountPrice.value * counted.value)
-//      currentPrice.value = discountPrice.value
-//      discount.value = false
-//    } else {
-//      summ.value = rounded(price * counted.value)
-//      currentPrice.value = price
-//    }
-// })
+const summ = ref(rounded(price * counted.value))
+watch(counted, (newValue) => {
+  if (newValue >= minQuantityForDiscount.value) {
+    summ.value = rounded(discountPrice.value * counted.value)
+    currentPrice.value = discountPrice.value
+    discount.value = false
+  } else {
+    summ.value = rounded(price * counted.value)
+    currentPrice.value = price
+  }
+})
 </script>
 <!-- TODO сделать респонсив дезигн для лаптопа -->
 <template>
@@ -95,7 +94,6 @@ const summ = ref(0)
 
     <div class="w-full px-[18px] desktop:px-[118px]">
       <!-- детально о товаре-->
-      <p class="mb-[32px] mt-10 mx-auto text-gray-700">тут/будут/хлебные/крошки</p>
       <!-- карточка товара -->
       <div class="desktop:h-[480px] mx-auto mb-8">
         <div class="tablet:flex h-full">
@@ -194,7 +192,7 @@ const summ = ref(0)
           class="bg-white rounded-[20px] desktop:absolute top-[180px] right-[118px] w-full desktop:w-[500px] h-fit shadow-lg tablet:p-8 p-6 pb-[26px] tablet:visible tablet:block hidden laptop:visible">
           <div class="flex mb-3">
             <p class="H2 text-gray-800 mr-2">
-              {{ getCargo(art).currentPrice + ' ₽' }}
+              {{ currentPrice + ' ₽' }}
             </p>
             <p v-if="counted >= getCargo(art).min_discount_quantity" class="H2 text-gray-300 line-through">
               {{ price + ' ₽' }}
@@ -204,7 +202,7 @@ const summ = ref(0)
           <div v-if="getCargo(art).discount" class="w-fit flex justify-between mb-5">
             <div class="p-3 bg-green-500 rounded-lg">
               <p class="text-white break-keep H4 font-bold">
-                {{ getCargo(art).discountPrice + ' ₽' }}
+                {{ getCargo(art).discount_price + ' ₽' }}
               </p>
             </div>
             <p class="my-auto ml-2 min-w-[163px] text-center break-words text-gray-400 p1">
@@ -238,7 +236,7 @@ const summ = ref(0)
             <p class="p2 text-gray-800 mb-3">Общая стоимость</p>
             <div class="flex gap-5">
               <p class="H2 text-gray-800">
-                {{ getCargo(art).summ + ' ₽' }}
+                {{ summ + ' ₽' }}
               </p>
               <p v-if="counted >= getCargo(art).min_discount_quantity" class="H2 text-gray-300 line-through">
                 {{ getCargo(art).price * counted + ' ₽' }}

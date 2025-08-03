@@ -96,7 +96,7 @@ const db = [
     image: '/catalog/Abrasive/strip_is_abrasive/682643364/Purple',
     warranty: '',
     size: 'мм',
-    min_discount_quantity: 784,
+    min_discount_quantity: 4,
     discount_price: 62,
   },
 
@@ -2123,7 +2123,7 @@ const db = [
     image: '/catalog/Soils/english_subtype2/429199210/gray',
     warranty: '0.8.л+0.2',
     size: '',
-    min_discount_quantity: 359,
+    min_discount_quantity: 5,
     discount_price: 24,
   },
 
@@ -2169,7 +2169,7 @@ const db = [
     image: '/catalog/Soils/english_subtype2/302906708/yellow',
     warranty: '1л.+0.5',
     size: '',
-    min_discount_quantity: 794,
+    min_discount_quantity: 1,
     discount_price: 78,
   },
 
@@ -2192,7 +2192,7 @@ const db = [
     image: '/catalog/Soils/english_subtype2/454342984/Transparent',
     warranty: '0,5л',
     size: '',
-    min_discount_quantity: 726,
+    min_discount_quantity: 5,
     discount_price: 53,
   },
 
@@ -2215,7 +2215,7 @@ const db = [
     image: '/catalog/Soils/Soil_aerosols/566225735/Transparent',
     warranty: '520',
     size: 'мл',
-    min_discount_quantity: 60,
+    min_discount_quantity: 4,
     discount_price: 29,
   },
 
@@ -2238,7 +2238,7 @@ const db = [
     image: '/catalog/Soils/Soil_aerosols/454415923/gray',
     warranty: '400',
     size: 'мл',
-    min_discount_quantity: 677,
+    min_discount_quantity: 134,
     discount_price: 81,
   },
 
@@ -2261,7 +2261,7 @@ const db = [
     image: '/catalog/Soils/Soil_aerosols/147604740/gray',
     warranty: '400',
     size: 'мл',
-    min_discount_quantity: 325,
+    min_discount_quantity: 44,
     discount_price: 42,
   },
 
@@ -2307,7 +2307,7 @@ const db = [
     image: '/catalog/Soils/Soil_aerosols/585265866/gray',
     warranty: '400',
     size: 'мл',
-    min_discount_quantity: 606,
+    min_discount_quantity: 5,
     discount_price: 69,
   },
 
@@ -2353,7 +2353,7 @@ const db = [
     image: '/catalog/disguise/disguise/126313545/brown',
     warranty: '',
     size: 'мм',
-    min_discount_quantity: 590,
+    min_discount_quantity: 5,
     discount_price: 31,
   },
 
@@ -2376,7 +2376,7 @@ const db = [
     image: '/catalog/disguise/disguise/523155923/brown',
     warranty: '',
     size: 'мм',
-    min_discount_quantity: 267,
+    min_discount_quantity: 5,
     discount_price: 77,
   },
 
@@ -2399,7 +2399,7 @@ const db = [
     image: '/catalog/disguise/disguise/831414414/Transparent',
     warranty: '',
     size: 'мм',
-    min_discount_quantity: 736,
+    min_discount_quantity: 5,
     discount_price: 85,
   },
 
@@ -2422,7 +2422,7 @@ const db = [
     image: '/catalog/disguise/disguise/550886774/Transparent',
     warranty: '',
     size: 'мм',
-    min_discount_quantity: 408,
+    min_discount_quantity: 5,
     discount_price: 29,
   },
 
