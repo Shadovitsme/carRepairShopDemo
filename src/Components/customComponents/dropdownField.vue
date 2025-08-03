@@ -9,7 +9,7 @@ const props = defineProps({
 <template>
   <div id="lol">
     <div :id="selected" class="bg-white mt-2 grid grid-cols-2 rounded-[20px] p-7">
-      <p @click="selected = item.type" v-for="item in props.dataArr">{{ item.type }}</p>
+      <p @click="selected = item" v-for="item in props.dataArr">{{ item }}</p>
     </div>
   </div>
 </template>
