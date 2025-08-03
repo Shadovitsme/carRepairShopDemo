@@ -9,7 +9,6 @@ const props = defineProps({
   description: { type: String, required: true },
   price: { type: String, required: true },
   brand: { type: String, required: true },
-  image: { type: String, required: true },
   graduation: { type: String, required: true },
   href: {},
 })
@@ -48,10 +47,8 @@ function addToBusket() {
 <template>
   <div class="overflow-hidden desktop:w-[334px] tablet:w-[179px] w-[152px]">
     <RouterLink :to="props.href">
-      <img
-        class="w-full desktop:h-[334px] tablet:h-[180px] h-[152px] desktop:mb-4 mb-2 rounded-[20px] object-cover"
-        :src="props.image"
-      />
+      <img class="w-full desktop:h-[334px] tablet:h-[180px] h-[152px] desktop:mb-4 mb-2 rounded-[20px] object-cover"
+        src="https://www.zapcar.ru/upload/iblock/c25/kcx3rbgrf701zkufbuxgt9a3rff31cbr/1646407335_11_kartinkin_net_p_avtozapchasti_kartinki_13.png" />
       <p class="p3 text-main-textBlue desktop:mb-3 mb-[10px]">{{ props.article }}</p>
       <p class="desktop:mb-3 mb-[10px] H7 text-main-textBlueDark">{{ props.price }}</p>
 
@@ -71,19 +68,11 @@ function addToBusket() {
       </div>
     </RouterLink>
 
-    <cusotomButton
-      v-if="toBusk"
-      class="w-full"
-      @click="addToBusket"
-      color="blue"
-      text="В корзину"
-      :medium="false"
-    />
+    <cusotomButton v-if="toBusk" class="w-full" @click="addToBusket" color="blue" text="В корзину" :medium="false" />
     <div v-if="!toBusk" class="flex justify-between w-full">
       <iconButton @click="RemoveOne" icon="-" color="blue"></iconButton>
       <div
-        class="bg-white desktop:py-3 flex border my-auto w-full desktop:h-full h-9 desktop:mx-5 mx-1 border-gray-300 rounded-full"
-      >
+        class="bg-white desktop:py-3 flex border my-auto w-full desktop:h-full h-9 desktop:mx-5 mx-1 border-gray-300 rounded-full">
         <p class="text-gray-500 input my-auto mx-auto">
           {{ counted }}
         </p>
