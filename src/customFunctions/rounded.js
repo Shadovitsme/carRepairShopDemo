@@ -1,3 +1,3 @@
 export function rounded(number) {
-    return +number.toFixed(2);
+  return +number.toFixed(2)
 }

@@ -131,7 +131,7 @@ export default {
 </script>
 
 <template>
-  <Header></Header>
+  <Header :main-page="false"></Header>
 
   <div v-if="!Final">
     <!-- для пустой корзины -->
@@ -228,7 +228,8 @@ export default {
       :cargoResult="cargoResult"
       @closeModal="toggleModal"
       @openOrderResult="openOrderResult"
-    ></ModalWindowAddOrder>
+    >
+    </ModalWindowAddOrder>
   </div>
   <FinalOrder
     :cargo-array="cargoResult"

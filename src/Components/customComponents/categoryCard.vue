@@ -65,9 +65,12 @@ switch (props.name) {
 <template>
   <RouterLink :to="props.href">
     <div
-      class="w-38 relative tablet:w-[17.375rem] desktop:w-[20.875rem] h-full overflow-hidden rounded-[10px] bg-blue-100">
-      <img class="w-full h-28.25 tablet:h-[12.375rem] object-cover"
-        src="https://www.zapcar.ru/upload/iblock/c25/kcx3rbgrf701zkufbuxgt9a3rff31cbr/1646407335_11_kartinkin_net_p_avtozapchasti_kartinki_13.png" />
+      class="w-38 relative tablet:w-[17.375rem] desktop:w-[20.875rem] h-full overflow-hidden rounded-[10px] bg-blue-100"
+    >
+      <img
+        class="w-full h-28.25 tablet:h-[12.375rem] object-cover"
+        src="https://www.zapcar.ru/upload/iblock/c25/kcx3rbgrf701zkufbuxgt9a3rff31cbr/1646407335_11_kartinkin_net_p_avtozapchasti_kartinki_13.png"
+      />
       <div class="w-full px-1.5 tablet:px-3 tablet:pt-5 desktop:px-3 pb-7 pt-3 desktop:pt-5">
         <p class="H8 font-bold text-main-textBlueDark mb-2">
           {{ props.name }}
@@ -80,7 +83,11 @@ switch (props.name) {
         <p class="my-auto p1 text-main-textBlueDark">
           {{ props.price }}
         </p>
-        <cusotomButton class="hidden tablet:visible tablet:inline-block" color="blue" text="Перейти"></cusotomButton>
+        <cusotomButton
+          class="hidden tablet:visible tablet:inline-block"
+          color="blue"
+          text="Перейти"
+        ></cusotomButton>
       </div>
     </div>
   </RouterLink>
