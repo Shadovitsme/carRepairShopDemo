@@ -26,27 +26,56 @@ if (props.big) {
 
 <template>
   <div :class="divStyle">
-    <input @input="upCaseWord" placeholder="Поиск по товарам" :style="{
-      'padding-left': width + 'px',
-    }" :class="inputStyle" />
+    <input
+      @input="upCaseWord"
+      placeholder="Поиск по товарам"
+      :style="{
+        'padding-left': width + 'px',
+      }"
+      :class="inputStyle"
+    />
 
-    <cusotomButton id="custom" @click="dropdowwnShow = !dropdowwnShow" v-if="props.big"
-      class="absolute my-1 tablet:my-2 tablet:left-2 left-1" color="blue" text="find" :iconSecond="dropDownArrow">
+    <cusotomButton
+      id="custom"
+      @click="dropdowwnShow = !dropdowwnShow"
+      v-if="props.big"
+      class="absolute my-1 tablet:my-2 tablet:left-2 left-1"
+      color="blue"
+      text="find"
+      :iconSecond="dropDownArrow"
+    >
     </cusotomButton>
     <RouterLink :to="href">
-      <cusotomButton v-if="props.big" class="absolute my-2 tablet:visible tablet:inline-block hidden right-2"
-        :iconSecond="searchIcon" color="black" text="Найти"></cusotomButton>
-      <IconButton v-if="props.big" class="absolute tablet:hidden visible inline-block my-1 right-1" icon="phone"
-        color="black"></IconButton>
+      <cusotomButton
+        v-if="props.big"
+        class="absolute my-2 tablet:visible tablet:inline-block hidden right-2"
+        :iconSecond="searchIcon"
+        color="black"
+        text="Найти"
+      ></cusotomButton>
+      <IconButton
+        v-if="props.big"
+        class="absolute tablet:hidden visible inline-block my-1 right-1"
+        icon="phone"
+        color="black"
+      ></IconButton>
     </RouterLink>
 
-    <DropdownField ref="myElement" @click="getEl" :dataArr="props.dataAr" v-if="dropdowwnShow"></DropdownField>
+    <DropdownField
+      ref="myElement"
+      @click="getEl"
+      :dataArr="props.dataAr"
+      v-if="dropdowwnShow"
+    ></DropdownField>
     <button v-if="!props.big" class="absolute right-5 mt-3.5">
       <RouterLink :to="href"> <img :src="searchIcon" /></RouterLink>
     </button>
     <div v-if="show" class="bg-gray-100 mt-2 py-4 px-5 rounded-[1.25rem]">
       <p v-for="item in categoryNames" v-bind:key="item.article" class="mb-4">
-        <RouterLink :to="'/cargo?data=' + item.article" class="hover:underline button2 text-gray-700">
+        <RouterLink
+          :to="'/cargo?data=' + item.article"
+          class="hover:underline button2 text-gray-700"
+        >
           {{ item.name }}
         </RouterLink>
       </p>
