@@ -8,17 +8,25 @@ import { reactive, ref } from 'vue'
 import { useCatalogStore } from '@/store/catalog'
 import { useRoute } from 'vue-router'
 import { storeToRefs } from 'pinia'
+import priceSortDesc from '@/customFunctions/priceSortDesc'
+import priceSortAsc from '@/customFunctions/priceSortAsk'
 
+function make_subArray(data) {
+  let subArray = Array.isArray(data) ? data : Object.values(data)
+  return subArray
+}
 
-function alfabetSortAsc() {
-  const currentCategory = category.value
+function updateWebListSow(subArray) {
+  categoryNames.value[currentCategory] = {
+    ...categoryNames.value[currentCategory],
+    sub: subArray,
+  }
+}
+
+function sub_category_alfabetSortAsk() {
   if (categoryNames.value[currentCategory] && categoryNames.value[currentCategory].sub) {
-    // Always convert sub to array
-    let subArray = Array.isArray(categoryNames.value[currentCategory].sub)
-      ? categoryNames.value[currentCategory].sub
-      : Object.values(categoryNames.value[currentCategory].sub);
+    let subArray = make_subArray(categoryNames.value[currentCategory].sub)
 
-    // Sort ascending
     subArray.sort((a, b) => {
       if (a.type > b.type) {
         return 1
@@ -28,24 +36,14 @@ function alfabetSortAsc() {
       }
       return -1
     })
-    categoryNames.value[currentCategory] = {
-      ...categoryNames.value[currentCategory],
-      sub: subArray
-    }
-    // Assign sorted array back
-
+    updateWebListSow(subArray)
   }
 }
 
-function alfabetSortDesc() {
-  const currentCategory = category.value
+function sub_category_alfabetSortDesk() {
   if (categoryNames.value[currentCategory] && categoryNames.value[currentCategory].sub) {
-    // Always convert sub to array
-    let subArray = Array.isArray(categoryNames.value[currentCategory].sub)
-      ? categoryNames.value[currentCategory].sub
-      : Object.values(categoryNames.value[currentCategory].sub);
+    let subArray = make_subArray(categoryNames.value[currentCategory].sub)
 
-    // Sort descending
     subArray.sort((a, b) => {
       if (a.type < b.type) {
         return 1
@@ -56,26 +54,8 @@ function alfabetSortDesc() {
       return -1
     })
 
-    // Assign sorted array back
-    // Force Vue to detect the change by replacing the whole object
-    categoryNames.value[currentCategory] = {
-      ...categoryNames.value[currentCategory],
-      sub: subArray
-    }
-
+    updateWebListSow(subArray)
   }
-}
-
-function priceSortDesc() {
-  categoryNames.value = categoryNames.value.sort((a, b) => {
-    return Math.sign(a.price - b.price)
-  })
-}
-
-function priceSortAsc() {
-  categoryNames.value = categoryNames.value.sort((a, b) => {
-    return -Math.sign(a.price - b.price)
-  })
 }
 
 const catalogStore = useCatalogStore()
@@ -86,7 +66,7 @@ const category = ref(
     : 'Прочее',
 )
 const categoryNames = reactive(storeToRefs(catalogStore).categories)
-
+const currentCategory = category.value
 </script>
 
 <template>
@@ -97,8 +77,10 @@ const categoryNames = reactive(storeToRefs(catalogStore).categories)
     <div class="w-full h-full mb-[100px] bg-white pt-[37px] px-[18px] desktop:px-[118px] mb-">
       <div class="flex w-full h-[46px] mb-8 justify-between">
         <p class="H2 text-gray-800">{{ category }}</p>
-        <SortPanel @alfabetSortAsc="alfabetSortAsc()" @alfabetSortDesc="alfabetSortDesc()"
-          @priceSortAsc="priceSortAsc()" @priceSortDesc="priceSortDesc()"></SortPanel>
+        <SortPanel @alfabetSortAsc="sub_category_alfabetSortAsk()" @alfabetSortDesc="sub_category_alfabetSortDesk()"
+          @priceSortAsc="priceSortAsc(categoryNames[currentCategory].sub)"
+          @priceSortDesc="priceSortDesc(categoryNames[currentCategory].sub)">
+        </SortPanel>
       </div>
       <template v-if="categoryNames[category]">
         <SubCategoryCard v-for="item in categoryNames[category].sub" :key="item.type"
