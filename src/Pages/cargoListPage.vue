@@ -54,39 +54,24 @@ const category = ref(
 )
 const sub = ref(useRoute().params.sub)
 const categoryNames = storeToRefs(catalogStore).categories
+
+console.log(categoryNames.value[category.value].sub[sub.value].cargo)
 </script>
 <template>
   <div class="w-full max-w-[1630px] mx-auto">
     <Header :mainPage="false"></Header>
 
-    <div
-      class="w-full h-full mb-[100px] bg-white pt-[37px] px-[18px] tablet:px-8 desktop:px-[118px] mb-"
-    >
+    <div class="w-full h-full mb-[100px] bg-white pt-[37px] px-[18px] tablet:px-8 desktop:px-[118px] mb-">
       <div class="flex w-full h-[46px] mb-8 justify-between">
         <p class="H2 text-gray-800">{{ sub }}</p>
-        <SortPanel
-          @alfabetSortAsc="alfabetSortAsc()"
-          @alfabetSortDesc="alfabetSortDesc()"
-          @priceSortAsc="priceSortAsc()"
-          @priceSortDesc="priceSortDesc()"
-        ></SortPanel>
+        <SortPanel @alfabetSortAsc="alfabetSortAsc()" @alfabetSortDesc="alfabetSortDesc()"
+          @priceSortAsc="priceSortAsc()" @priceSortDesc="priceSortDesc()"></SortPanel>
       </div>
-      <div
-        v-if="categoryNames[category]"
-        class="grid grid-cols-2 tablet:grid-cols-3 desktop:grid-cols-4 gap-5"
-      >
-        <CargoCard
-          v-for="item in categoryNames[category].sub[sub].cargo"
-          :description="item.description"
-          :key="item.article"
-          :price="item.price + ' ₽'"
-          :cargo-name="item.name"
-          :article="item.article"
-          :brand="item.brand"
-          :graduation="item.graduation"
-          :image="item.image + '/1.webp'"
-          :href="'/cargo/' + category + '/' + sub + '/' + item.article"
-        ></CargoCard>
+      <div v-if="categoryNames[category]" class="grid grid-cols-2 tablet:grid-cols-3 desktop:grid-cols-4 gap-5">
+        <CargoCard v-for="item in categoryNames[category].sub[sub].cargo" :description="item.description"
+          :key="item.article" :price="item.price + ' ₽'" :cargo-name="item.name" :article="item.article"
+          :brand="item.brand" :graduation="item.graduation" :image="item.image + '/1.webp'"
+          :href="'/cargo/' + category + '/' + sub + '/' + item.article"></CargoCard>
       </div>
     </div>
     <MobileNavbar></MobileNavbar>

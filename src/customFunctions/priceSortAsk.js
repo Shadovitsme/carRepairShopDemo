@@ -5,13 +5,6 @@ export default function priceSortAsc(dataToSort) {
   subArray.sort((a, b) => {
     return -Math.sign(a.price - b.price)
   })
-  updateWebListSow(subArray,dataToSort)
+  return subArray;
 }
 
-
-function updateWebListSow(subArray,dataToSort) {
-  dataToSort = {
-    ...dataToSort,
-    sub: subArray,
-  }
-}

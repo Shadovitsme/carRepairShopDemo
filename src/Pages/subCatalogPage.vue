@@ -10,11 +10,8 @@ import { useRoute } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import priceSortDesc from '@/customFunctions/priceSortDesc'
 import priceSortAsc from '@/customFunctions/priceSortAsk'
-
-function make_subArray(data) {
-  let subArray = Array.isArray(data) ? data : Object.values(data)
-  return subArray
-}
+import alfabetSortAsc from '@/customFunctions/alfabetSortAsc'
+import alfabetSortDesc from '@/customFunctions/alfabetSortDesc'
 
 function updateWebListSow(subArray) {
   categoryNames.value[currentCategory] = {
@@ -24,38 +21,24 @@ function updateWebListSow(subArray) {
 }
 
 function sub_category_alfabetSortAsk() {
-  if (categoryNames.value[currentCategory] && categoryNames.value[currentCategory].sub) {
-    let subArray = make_subArray(categoryNames.value[currentCategory].sub)
-
-    subArray.sort((a, b) => {
-      if (a.type > b.type) {
-        return 1
-      }
-      if (a.type == b.type) {
-        return 0
-      }
-      return -1
-    })
-    updateWebListSow(subArray)
-  }
+  let subArray = alfabetSortAsc(categoryNames.value[currentCategory].sub)
+  updateWebListSow(subArray)
 }
 
 function sub_category_alfabetSortDesk() {
-  if (categoryNames.value[currentCategory] && categoryNames.value[currentCategory].sub) {
-    let subArray = make_subArray(categoryNames.value[currentCategory].sub)
+  let subArray = alfabetSortDesc(categoryNames.value[currentCategory].su)
+  updateWebListSow(subArray)
 
-    subArray.sort((a, b) => {
-      if (a.type < b.type) {
-        return 1
-      }
-      if (a.type === b.type) {
-        return 0
-      }
-      return -1
-    })
+}
 
-    updateWebListSow(subArray)
-  }
+function ask(toSort) {
+  let sort = priceSortAsc(toSort)
+  updateWebListSow(sort)
+}
+
+function desk(toSort) {
+  let sort = priceSortDesc(toSort)
+  updateWebListSow(sort)
 }
 
 const catalogStore = useCatalogStore()
@@ -67,6 +50,7 @@ const category = ref(
 )
 const categoryNames = reactive(storeToRefs(catalogStore).categories)
 const currentCategory = category.value
+
 </script>
 
 <template>
@@ -78,8 +62,8 @@ const currentCategory = category.value
       <div class="flex w-full h-[46px] mb-8 justify-between">
         <p class="H2 text-gray-800">{{ category }}</p>
         <SortPanel @alfabetSortAsc="sub_category_alfabetSortAsk()" @alfabetSortDesc="sub_category_alfabetSortDesk()"
-          @priceSortAsc="priceSortAsc(categoryNames[currentCategory].sub)"
-          @priceSortDesc="priceSortDesc(categoryNames[currentCategory].sub)">
+          @priceSortAsc="ask(categoryNames[currentCategory].sub)"
+          @priceSortDesc="desk(categoryNames[currentCategory].sub)">
         </SortPanel>
       </div>
       <template v-if="categoryNames[category]">
