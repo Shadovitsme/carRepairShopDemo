@@ -6,30 +6,20 @@ import MobileNavbar from '@/Components/customComponents/mobileNavbar.vue'
 import SortPanel from '@/Components/customComponents/sortPanel.vue'
 import { useCatalogStore } from '@/store/catalog'
 import { storeToRefs } from 'pinia'
+import makeSubArrayForSort from '@/customFunctions/makeSubArrayForSort'
+import alfabetSortAsc from '@/customFunctions/alfabetSortAsc'
+import { nextTick, ref } from 'vue'
+import alfabetSortDesc from '@/customFunctions/alfabetSortDesc'
+const catalogStore = useCatalogStore()
+const categoryNames = storeToRefs(catalogStore).categories
+let sort = ref(categoryNames.value)
 
-function alfabetSortAsc() {
-  categoryNames.value = categoryNames.value.sort((a, b) => {
-    if (a.type > b.type) {
-      return 1
-    }
-    if (a.type == b.type) {
-      return 0
-    }
-    return -1
-  })
+function alfabetSortAscCatalogPage() {
+  sort.value = alfabetSortAsc(categoryNames.value)
 }
 
-function alfabetSortDesc() {
-  categoryNames.value = categoryNames.value.sort((a, b) => {
-    if (a.type < b.type) {
-      return 1
-    }
-    if (a.type === b.type) {
-      return 0
-    }
-
-    return -1
-  })
+function alfabetSortDescCatalogPage() {
+  sort.value = alfabetSortDesc(categoryNames.value)
 }
 
 function priceSortDesc() {
@@ -43,10 +33,8 @@ function priceSortAsc() {
     return -Math.sign(a.price - b.price)
   })
 }
-
-const catalogStore = useCatalogStore()
-const categoryNames = storeToRefs(catalogStore).categories
 </script>
+<script></script>
 <template>
   <div class="w-full max-w-[1630px] mx-auto">
     <Header :mainPage="false"></Header>
@@ -56,14 +44,14 @@ const categoryNames = storeToRefs(catalogStore).categories
       <div class="flex w-full h-[46px] mb-8 justify-between">
         <p class="H2 text-gray-800">Каталог</p>
         <SortPanel
-          @alfabetSortAsc="alfabetSortAsc()"
-          @alfabetSortDesc="alfabetSortDesc()"
+          @alfabetSortAsc="alfabetSortAscCatalogPage()"
+          @alfabetSortDesc="alfabetSortDescCatalogPage()"
           @priceSortAsc="priceSortAsc()"
           @priceSortDesc="priceSortDesc()"
         ></SortPanel>
       </div>
 
-      <categoryCatalog :categoryNames="categoryNames"></categoryCatalog>
+      <categoryCatalog :categoryNames="sort"></categoryCatalog>
     </div>
     <MobileNavbar></MobileNavbar>
 

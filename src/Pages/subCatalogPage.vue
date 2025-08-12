@@ -77,16 +77,23 @@ const currentCategory = category.value
     <div class="w-full h-full mb-[100px] bg-white pt-[37px] px-[18px] desktop:px-[118px] mb-">
       <div class="flex w-full h-[46px] mb-8 justify-between">
         <p class="H2 text-gray-800">{{ category }}</p>
-        <SortPanel @alfabetSortAsc="sub_category_alfabetSortAsk()" @alfabetSortDesc="sub_category_alfabetSortDesk()"
+        <SortPanel
+          @alfabetSortAsc="sub_category_alfabetSortAsk()"
+          @alfabetSortDesc="sub_category_alfabetSortDesk()"
           @priceSortAsc="priceSortAsc(categoryNames[currentCategory].sub)"
-          @priceSortDesc="priceSortDesc(categoryNames[currentCategory].sub)">
+          @priceSortDesc="priceSortDesc(categoryNames[currentCategory].sub)"
+        >
         </SortPanel>
       </div>
       <template v-if="categoryNames[category]">
-        <SubCategoryCard v-for="item in categoryNames[category].sub" :key="item.type"
+        <SubCategoryCard
+          v-for="item in categoryNames[category].sub"
+          :key="item.type"
           :href="'/cargoList/' + category + '/' + item.type"
           description="Lorem ipsum sumaru texvd, orem ipsum sumaru texsumaru texvd, lorem ipsum umaru tex"
-          :name="item.type" :price="'от ' + item.price + ' ₽'"></SubCategoryCard>
+          :name="item.type"
+          :price="'от ' + item.price + ' ₽'"
+        ></SubCategoryCard>
       </template>
     </div>
 
