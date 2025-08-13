@@ -11,6 +11,15 @@ import { storeToRefs } from 'pinia'
 import priceSortDesc from '@/customFunctions/priceSortDesc'
 import priceSortAsc from '@/customFunctions/priceSortAsk'
 
+const catalogStore = useCatalogStore()
+const category = ref(
+  catalogStore.with_description.indexOf(useRoute().params.category) !== -1
+    ? useRoute().params.category
+    : 'Прочее',
+)
+const categoryNames = reactive(storeToRefs(catalogStore).categories)
+const currentCategory = category.value
+
 function make_subArray(data) {
   let subArray = Array.isArray(data) ? data : Object.values(data)
   return subArray
@@ -58,15 +67,15 @@ function sub_category_alfabetSortDesk() {
   }
 }
 
-const catalogStore = useCatalogStore()
+function priceSortAscSubCatalog() {
+  let subArray = priceSortAsc(categoryNames.value[currentCategory].sub)
+  updateWebListSow(subArray)
+}
 
-const category = ref(
-  catalogStore.with_description.indexOf(useRoute().params.category) !== -1
-    ? useRoute().params.category
-    : 'Прочее',
-)
-const categoryNames = reactive(storeToRefs(catalogStore).categories)
-const currentCategory = category.value
+function priceSortDescSubCatalog() {
+  let subArray = priceSortDesc(categoryNames.value[currentCategory].sub)
+  updateWebListSow(subArray)
+}
 </script>
 
 <template>
@@ -80,8 +89,8 @@ const currentCategory = category.value
         <SortPanel
           @alfabetSortAsc="sub_category_alfabetSortAsk()"
           @alfabetSortDesc="sub_category_alfabetSortDesk()"
-          @priceSortAsc="priceSortAsc(categoryNames[currentCategory].sub)"
-          @priceSortDesc="priceSortDesc(categoryNames[currentCategory].sub)"
+          @priceSortAsc="priceSortAscSubCatalog()"
+          @priceSortDesc="priceSortDescSubCatalog()"
         >
         </SortPanel>
       </div>

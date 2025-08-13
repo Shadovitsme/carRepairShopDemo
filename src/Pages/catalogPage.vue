@@ -10,6 +10,8 @@ import makeSubArrayForSort from '@/customFunctions/makeSubArrayForSort'
 import alfabetSortAsc from '@/customFunctions/alfabetSortAsc'
 import { nextTick, ref } from 'vue'
 import alfabetSortDesc from '@/customFunctions/alfabetSortDesc'
+import priceSortAsc from '@/customFunctions/priceSortAsk'
+import priceSortDesc from '@/customFunctions/priceSortDesc'
 const catalogStore = useCatalogStore()
 const categoryNames = storeToRefs(catalogStore).categories
 let sort = ref(categoryNames.value)
@@ -22,16 +24,12 @@ function alfabetSortDescCatalogPage() {
   sort.value = alfabetSortDesc(categoryNames.value)
 }
 
-function priceSortDesc() {
-  categoryNames.value = categoryNames.value.sort((a, b) => {
-    return Math.sign(a.price - b.price)
-  })
+function priceSortAscCatalog() {
+  sort.value = priceSortAsc(categoryNames.value)
 }
 
-function priceSortAsc() {
-  categoryNames.value = categoryNames.value.sort((a, b) => {
-    return -Math.sign(a.price - b.price)
-  })
+function priceSortDescCatalog() {
+  sort.value = priceSortDesc(categoryNames.value)
 }
 </script>
 <script></script>
@@ -46,8 +44,8 @@ function priceSortAsc() {
         <SortPanel
           @alfabetSortAsc="alfabetSortAscCatalogPage()"
           @alfabetSortDesc="alfabetSortDescCatalogPage()"
-          @priceSortAsc="priceSortAsc()"
-          @priceSortDesc="priceSortDesc()"
+          @priceSortAsc="priceSortAscCatalog()"
+          @priceSortDesc="priceSortDescCatalog()"
         ></SortPanel>
       </div>
 
