@@ -45,7 +45,7 @@ function addToBusket() {
 </script>
 
 <template>
-  <div class="overflow-hidden desktop:w-[334px] tablet:w-[179px] w-[152px]">
+  <div class="overflow-hidden desktop:w-[334px] tablet:w-[200px] w-[152px]">
     <RouterLink :to="props.href">
       <img
         class="w-full desktop:h-[334px] tablet:h-[180px] h-[152px] desktop:mb-4 mb-2 rounded-[20px] object-cover"
@@ -54,7 +54,7 @@ function addToBusket() {
       <p class="p3 text-main-textBlue desktop:mb-3 mb-[10px]">{{ props.article }}</p>
       <p class="desktop:mb-3 mb-[10px] H7 text-main-textBlueDark">{{ props.price }}</p>
 
-      <p class="H8 desktop:h-12 tablet:h-20 h-[60px] text-main-textBlueDark mb-1">
+      <p class="H8 desktop:h-12 tablet:h-12 h-[60px] text-main-textBlueDark mb-1">
         {{ props.cargoName }}
       </p>
       <div class="flex mb-3">

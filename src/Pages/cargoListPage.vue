@@ -10,6 +10,8 @@ import { useRoute } from 'vue-router'
 import { ref } from 'vue'
 import alfabetSortAsc from '@/customFunctions/alfabetSortAsc'
 import alfabetSortDesc from '@/customFunctions/alfabetSortDesc'
+import priceSortDesc from '@/customFunctions/priceSortDesc'
+import priceSortAsc from '@/customFunctions/priceSortAsk'
 
 const catalogStore = useCatalogStore()
 const category = ref(
@@ -32,16 +34,12 @@ function alfabetSortDescCargoListPage() {
   )
 }
 
-function priceSortDesc() {
-  categoryNames.value = categoryNames.value.sort((a, b) => {
-    return Math.sign(a.price - b.price)
-  })
+function priceSortDescCargo() {
+  cargoList.value = priceSortDesc(categoryNames.value[category.value].sub[sub.value].cargo)
 }
 
-function priceSortAsc() {
-  categoryNames.value = categoryNames.value.sort((a, b) => {
-    return -Math.sign(a.price - b.price)
-  })
+function priceSortAscCargo() {
+  cargoList.value = priceSortAsc(categoryNames.value[category.value].sub[sub.value].cargo)
 }
 </script>
 <template>
@@ -56,13 +54,13 @@ function priceSortAsc() {
         <SortPanel
           @alfabetSortAsc="alfabetSortAscCargoListPage()"
           @alfabetSortDesc="alfabetSortDescCargoListPage()"
-          @priceSortAsc="priceSortAsc()"
-          @priceSortDesc="priceSortDesc()"
+          @priceSortAsc="priceSortAscCargo()"
+          @priceSortDesc="priceSortDescCargo()"
         ></SortPanel>
       </div>
       <div
         v-if="categoryNames[category]"
-        class="grid grid-cols-2 tablet:grid-cols-3 desktop:grid-cols-4 gap-5"
+        class="flex w-full flex-wrap tablet:gap-10 gap-5 justify-center"
       >
         <CargoCard
           v-for="item in cargoList"

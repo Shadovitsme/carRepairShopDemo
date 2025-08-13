@@ -10,7 +10,7 @@ const props = defineProps({
 </script>
 <template>
   <div
-    class="w-full h-21.5 bg-blue-100 rounded-[1.25rem] desktop:rounded-full flex justify-between px-5 tablet:px-7 desktop:px-10 py-5.25 mb-5"
+    class="w-full h-21.5 bg-blue-100 rounded-[1.25rem] desktop:rounded-full flex justify-between pl-5 tablet:pl-7 desktop:pl-10 py-5.25 mb-5"
   >
     <p
       class="my-auto H8 w-33 tablet:w-[15.625rem] desktop:w-[25.75rem] desktop:mb-2 text-main-textBlueDark"

@@ -5,7 +5,7 @@ import dropDownArrow from '@/images/downWhiteArrow.svg'
 import DropdownField from './dropdownField.vue'
 import { ref } from 'vue'
 import IconButton from './iconButton.vue'
-let width = ref(140)
+let width = ref(110)
 
 const props = defineProps({
   big: { type: Boolean, required: false },
@@ -17,7 +17,7 @@ let inputStyle = ref(
   'w-full h-full rounded-full bg-gray-100 focus:border-gray-200 caret-blue-600 border-gray-200 input text-gray-800 placeholder:text-gray-400 ',
 )
 if (props.big) {
-  divStyle = 'relative tablet:w-[31.5rem] h-11 tablet:h-16 laptop:h-[52px] desktop:h-[64px]'
+  divStyle = 'relative h-9 tablet:h-12 tablet:w-[31.5rem]'
   inputStyle.value += 'tablet:pr-[8.125rem] pr-11.25 desktop:pr-[8.4375rem] py-1 desktop:py-0.5'
 } else {
   inputStyle.value += 'pl-4 pr-0.5 py-6 '
@@ -39,7 +39,7 @@ if (props.big) {
       id="custom"
       @click="dropdowwnShow = !dropdowwnShow"
       v-if="props.big"
-      class="absolute my-1 tablet:my-2 tablet:left-2 left-1"
+      class="absolute left-0"
       color="blue"
       text="find"
       :iconSecond="dropDownArrow"
@@ -48,7 +48,7 @@ if (props.big) {
     <RouterLink :to="href">
       <cusotomButton
         v-if="props.big"
-        class="absolute my-2 tablet:visible tablet:inline-block hidden right-2"
+        class="absolute tablet:visible tablet:inline-block hidden right-0 top-0 bottom-0"
         :iconSecond="searchIcon"
         color="black"
         text="Найти"
@@ -86,4 +86,3 @@ if (props.big) {
     </div>
   </div>
 </template>
-<style></style>
