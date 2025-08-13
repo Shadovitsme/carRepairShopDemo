@@ -8,30 +8,28 @@ import { useCatalogStore } from '@/store/catalog.js'
 import { storeToRefs } from 'pinia'
 import { useRoute } from 'vue-router'
 import { ref } from 'vue'
+import alfabetSortAsc from '@/customFunctions/alfabetSortAsc'
+import alfabetSortDesc from '@/customFunctions/alfabetSortDesc'
 
-function alfabetSortAsc() {
-  categoryNames.value = categoryNames.value.sort((a, b) => {
-    if (a.name > b.name) {
-      return 1
-    }
-    if (a.name == b.name) {
-      return 0
-    }
-    return -1
-  })
+const catalogStore = useCatalogStore()
+const category = ref(
+  catalogStore.with_description.indexOf(useRoute().params.category) !== -1
+    ? useRoute().params.category
+    : 'Прочее',
+)
+const sub = ref(useRoute().params.sub)
+const categoryNames = storeToRefs(catalogStore).categories
+let cargoList = ref(categoryNames.value[category.value].sub[sub.value].cargo)
+
+function alfabetSortAscCargoListPage() {
+  cargoList.value = alfabetSortAsc(categoryNames.value[category.value].sub[sub.value].cargo, 'name')
 }
 
-function alfabetSortDesc() {
-  categoryNames.value = categoryNames.value.sort((a, b) => {
-    if (a.name < b.name) {
-      return 1
-    }
-    if (a.name === b.name) {
-      return 0
-    }
-
-    return -1
-  })
+function alfabetSortDescCargoListPage() {
+  cargoList.value = alfabetSortDesc(
+    categoryNames.value[category.value].sub[sub.value].cargo,
+    'name',
+  )
 }
 
 function priceSortDesc() {
@@ -45,15 +43,6 @@ function priceSortAsc() {
     return -Math.sign(a.price - b.price)
   })
 }
-
-const catalogStore = useCatalogStore()
-const category = ref(
-  catalogStore.with_description.indexOf(useRoute().params.category) !== -1
-    ? useRoute().params.category
-    : 'Прочее',
-)
-const sub = ref(useRoute().params.sub)
-const categoryNames = storeToRefs(catalogStore).categories
 </script>
 <template>
   <div class="w-full max-w-[1630px] mx-auto">
@@ -65,8 +54,8 @@ const categoryNames = storeToRefs(catalogStore).categories
       <div class="flex w-full h-[46px] mb-8 justify-between">
         <p class="H2 text-gray-800">{{ sub }}</p>
         <SortPanel
-          @alfabetSortAsc="alfabetSortAsc()"
-          @alfabetSortDesc="alfabetSortDesc()"
+          @alfabetSortAsc="alfabetSortAscCargoListPage()"
+          @alfabetSortDesc="alfabetSortDescCargoListPage()"
           @priceSortAsc="priceSortAsc()"
           @priceSortDesc="priceSortDesc()"
         ></SortPanel>
@@ -76,7 +65,7 @@ const categoryNames = storeToRefs(catalogStore).categories
         class="grid grid-cols-2 tablet:grid-cols-3 desktop:grid-cols-4 gap-5"
       >
         <CargoCard
-          v-for="item in categoryNames[category].sub[sub].cargo"
+          v-for="item in cargoList"
           :description="item.description"
           :key="item.article"
           :price="item.price + ' ₽'"
