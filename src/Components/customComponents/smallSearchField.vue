@@ -5,7 +5,7 @@ import dropDownArrow from '@/images/downWhiteArrow.svg'
 import DropdownField from './dropdownField.vue'
 import { ref } from 'vue'
 import IconButton from './iconButton.vue'
-let width = ref(110)
+let width = ref(160)
 
 const props = defineProps({
   big: { type: Boolean, required: false },
@@ -22,6 +22,8 @@ if (props.big) {
 } else {
   inputStyle.value += 'pl-4 pr-0.5 py-6 '
 }
+
+let selectedCategory = ref('Категории')
 </script>
 
 <template>
@@ -39,9 +41,9 @@ if (props.big) {
       id="custom"
       @click="dropdowwnShow = !dropdowwnShow"
       v-if="props.big"
-      class="absolute left-0"
+      class="absolute left-0 w-[150px]"
       color="blue"
-      text="find"
+      :text="selectedCategory"
       :iconSecond="dropDownArrow"
     >
     </cusotomButton>
@@ -63,7 +65,12 @@ if (props.big) {
 
     <DropdownField
       ref="myElement"
-      @click="getEl"
+      @data-sent="
+        (item) => {
+          selectedCategory = item
+          dropdowwnShow = false
+        }
+      "
       :dataArr="props.dataAr"
       v-if="dropdowwnShow"
     ></DropdownField>
