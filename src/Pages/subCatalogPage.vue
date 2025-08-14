@@ -33,38 +33,24 @@ function updateWebListSow(subArray) {
 }
 
 function sub_category_alfabetSortAsk() {
-  if (categoryNames.value[currentCategory] && categoryNames.value[currentCategory].sub) {
-    let subArray = make_subArray(categoryNames.value[currentCategory].sub)
-
-    subArray.sort((a, b) => {
-      if (a.type > b.type) {
-        return 1
-      }
-      if (a.type == b.type) {
-        return 0
-      }
-      return -1
-    })
-    updateWebListSow(subArray)
-  }
+  let subArray = alfabetSortAsc(categoryNames.value[currentCategory].sub)
+  updateWebListSow(subArray)
 }
 
 function sub_category_alfabetSortDesk() {
-  if (categoryNames.value[currentCategory] && categoryNames.value[currentCategory].sub) {
-    let subArray = make_subArray(categoryNames.value[currentCategory].sub)
+  let subArray = alfabetSortDesc(categoryNames.value[currentCategory].su)
+  updateWebListSow(subArray)
 
-    subArray.sort((a, b) => {
-      if (a.type < b.type) {
-        return 1
-      }
-      if (a.type === b.type) {
-        return 0
-      }
-      return -1
-    })
+}
 
-    updateWebListSow(subArray)
-  }
+function ask(toSort) {
+  let sort = priceSortAsc(toSort)
+  updateWebListSow(sort)
+}
+
+function desk(toSort) {
+  let sort = priceSortDesc(toSort)
+  updateWebListSow(sort)
 }
 
 function priceSortAscSubCatalog() {
