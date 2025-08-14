@@ -5,12 +5,15 @@ import dropDownArrow from '@/images/downWhiteArrow.svg'
 import DropdownField from './dropdownField.vue'
 import { ref } from 'vue'
 import IconButton from './iconButton.vue'
-let width = ref(160)
+import { useCatalogStore } from '@/store/catalog.js'
 
 const props = defineProps({
   big: { type: Boolean, required: false },
   dataAr: { type: Array, required: false },
 })
+
+let width = ref(160)
+const model = defineModel()
 let dropdowwnShow = ref(false)
 let divStyle = 'relative w-full tablet:w-[18.125rem] laptop:h-[52px] '
 let inputStyle = ref(
@@ -24,12 +27,30 @@ if (props.big) {
 }
 
 let selectedCategory = ref('Категории')
+const catalogStore = useCatalogStore()
+
+function getAllCargoPositions() {
+  let ar = catalogStore.with_description
+  ar.forEach((element) => {
+    if (catalogStore.categories[element]) {
+      Object.keys(catalogStore.categories[element].sub).forEach((key) => {
+        console.log(catalogStore.categories[element].sub[key].cargo)
+        Object.keys(catalogStore.categories[element].sub).forEach((key) => {
+          console.log(catalogStore.categories[element].sub[key].cargo)
+        })
+      })
+    }
+  })
+}
+
+getAllCargoPositions()
 </script>
 
 <template>
   <div :class="divStyle">
     <input
       @input="upCaseWord"
+      v-model="model"
       placeholder="Поиск по товарам"
       :style="{
         'padding-left': width + 'px',
@@ -53,19 +74,21 @@ let selectedCategory = ref('Категории')
         class="absolute tablet:visible tablet:inline-block hidden right-0 top-0 bottom-0"
         :iconSecond="searchIcon"
         color="black"
+        @click="test()"
         text="Найти"
       ></cusotomButton>
       <IconButton
         v-if="props.big"
         class="absolute tablet:hidden visible inline-block my-1 right-1"
         icon="phone"
+        @click="test()"
         color="black"
       ></IconButton>
     </RouterLink>
 
     <DropdownField
       ref="myElement"
-      @data-sent="
+      @selectCategory="
         (item) => {
           selectedCategory = item
           dropdowwnShow = false
@@ -77,7 +100,7 @@ let selectedCategory = ref('Категории')
     <button v-if="!props.big" class="absolute right-5 mt-3.5">
       <RouterLink :to="href"> <img :src="searchIcon" /></RouterLink>
     </button>
-    <div v-if="show" class="bg-gray-100 mt-2 py-4 px-5 rounded-[1.25rem]">
+    <div v-if="model" class="bg-gray-100 mt-2 py-4 px-5 rounded-[1.25rem]">
       <p v-for="item in categoryNames" v-bind:key="item.article" class="mb-4">
         <RouterLink
           :to="'/cargo?data=' + item.article"
