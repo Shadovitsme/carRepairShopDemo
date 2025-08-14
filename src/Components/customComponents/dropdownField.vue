@@ -4,9 +4,7 @@ const props = defineProps({
 })
 const emit = defineEmits(['selectCategory'])
 const selectCategory = (item) => {
-  if (item.length > 9) {
-    item = item.slice(0, 7) + '...'
-  }
+
   emit('selectCategory', item)
 }
 </script>

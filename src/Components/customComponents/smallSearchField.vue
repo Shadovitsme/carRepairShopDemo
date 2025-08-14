@@ -31,19 +31,36 @@ const catalogStore = useCatalogStore()
 
 function getAllCargoPositions() {
   let ar = catalogStore.with_description
+
+  if (selectedCategory.value != 'Категории') {
+
+    Object.keys(catalogStore.categories[selectedCategory.value].sub).forEach((key) => {
+      let short = (catalogStore.categories[selectedCategory.value].sub[key].cargo)
+              Object.keys(short).forEach((shortKey) => {
+console.log(short[shortKey].name)            
+
+      })
+
+      })
+  }
   ar.forEach((element) => {
     if (catalogStore.categories[element]) {
-      Object.keys(catalogStore.categories[element].sub).forEach((key) => {
-        console.log(catalogStore.categories[element].sub[key].cargo)
-        Object.keys(catalogStore.categories[element].sub).forEach((key) => {
-          console.log(catalogStore.categories[element].sub[key].cargo)
-        })
-      })
+      // Object.keys(catalogStore.categories[element].sub).forEach((key) => {
+      //   Object.keys(catalogStore.categories[element].sub).forEach((key) => {
+      //     console.log(catalogStore.categories[element].sub[key].cargo)
+      //   })
+      // })
     }
   })
 }
 
-getAllCargoPositions()
+function setShortText() {
+  if (selectedCategory.value.length > 9) {
+    return selectedCategory.value.slice(0, 7) + '...'
+  }
+  else return selectedCategory.value
+}
+
 </script>
 
 <template>
@@ -60,11 +77,11 @@ getAllCargoPositions()
 
     <cusotomButton
       id="custom"
-      @click="dropdowwnShow = !dropdowwnShow"
+      @click="() => { dropdowwnShow = !dropdowwnShow;  getAllCargoPositions() }"
       v-if="props.big"
       class="absolute left-0 w-[150px]"
       color="blue"
-      :text="selectedCategory"
+      :text="setShortText()"
       :iconSecond="dropDownArrow"
     >
     </cusotomButton>
