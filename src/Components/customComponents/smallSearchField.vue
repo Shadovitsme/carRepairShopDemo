@@ -28,20 +28,23 @@ if (props.big) {
 
 let selectedCategory = ref('Категории')
 const catalogStore = useCatalogStore()
+let searchArrayForShow = ref([])
 
 function getAllCargoPositions() {
   let ar = catalogStore.with_description
-
+  let sorted = []
+  let i = 0
   if (selectedCategory.value != 'Категории') {
-
     Object.keys(catalogStore.categories[selectedCategory.value].sub).forEach((key) => {
-      let short = (catalogStore.categories[selectedCategory.value].sub[key].cargo)
-              Object.keys(short).forEach((shortKey) => {
-console.log(short[shortKey].name)            
-
+      let short = catalogStore.categories[selectedCategory.value].sub[key].cargo
+      Object.keys(short).forEach((shortKey) => {
+        if (i < 5 && short[shortKey].name.startsWith(model.value)) {
+          sorted.push(short[shortKey])
+          i++
+        }
       })
-
-      })
+    })
+    searchArrayForShow.value = sorted
   }
   ar.forEach((element) => {
     if (catalogStore.categories[element]) {
@@ -57,16 +60,14 @@ console.log(short[shortKey].name)
 function setShortText() {
   if (selectedCategory.value.length > 9) {
     return selectedCategory.value.slice(0, 7) + '...'
-  }
-  else return selectedCategory.value
+  } else return selectedCategory.value
 }
-
 </script>
 
 <template>
   <div :class="divStyle">
     <input
-      @input="upCaseWord"
+      @change="getAllCargoPositions()"
       v-model="model"
       placeholder="Поиск по товарам"
       :style="{
@@ -77,7 +78,11 @@ function setShortText() {
 
     <cusotomButton
       id="custom"
-      @click="() => { dropdowwnShow = !dropdowwnShow;  getAllCargoPositions() }"
+      @click="
+        () => {
+          dropdowwnShow = !dropdowwnShow
+        }
+      "
       v-if="props.big"
       class="absolute left-0 w-[150px]"
       color="blue"
@@ -108,6 +113,7 @@ function setShortText() {
       @selectCategory="
         (item) => {
           selectedCategory = item
+          getAllCargoPositions()
           dropdowwnShow = false
         }
       "
@@ -118,7 +124,7 @@ function setShortText() {
       <RouterLink :to="href"> <img :src="searchIcon" /></RouterLink>
     </button>
     <div v-if="model" class="bg-gray-100 mt-2 py-4 px-5 rounded-[1.25rem]">
-      <p v-for="item in categoryNames" v-bind:key="item.article" class="mb-4">
+      <p v-for="item in searchArrayForShow" v-bind:key="item.article" class="mb-4">
         <RouterLink
           :to="'/cargo?data=' + item.article"
           class="hover:underline button2 text-gray-700"

@@ -4,7 +4,6 @@ const props = defineProps({
 })
 const emit = defineEmits(['selectCategory'])
 const selectCategory = (item) => {
-
   emit('selectCategory', item)
 }
 </script>

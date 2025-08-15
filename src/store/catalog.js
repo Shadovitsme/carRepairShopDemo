@@ -12,7 +12,7 @@ const with_description = [
   'Средства защиты кузова',
   'Тара',
   'Шпатлевка',
-  'Прочее'
+  'Прочее',
 ]
 
 export const useCatalogStore = defineStore('catalog', () => {
