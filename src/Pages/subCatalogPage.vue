@@ -40,7 +40,6 @@ function sub_category_alfabetSortAsk() {
 function sub_category_alfabetSortDesk() {
   let subArray = alfabetSortDesc(categoryNames.value[currentCategory].su)
   updateWebListSow(subArray)
-
 }
 
 function ask(toSort) {

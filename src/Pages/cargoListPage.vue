@@ -46,7 +46,9 @@ function priceSortAscCargo() {
   <div class="w-full max-w-[1630px] mx-auto">
     <Header :mainPage="false"></Header>
 
-    <div class="w-full h-full mb-[100px] bg-white pt-[37px] px-[18px] tablet:px-8 desktop:px-[118px] mb-">
+    <div
+      class="w-full h-full mb-[100px] bg-white pt-[37px] px-[18px] tablet:px-8 desktop:px-[118px] mb-"
+    >
       <div class="flex w-full h-[46px] mb-8 justify-between">
         <p class="H2 text-gray-800">{{ sub }}</p>
         <SortPanel
