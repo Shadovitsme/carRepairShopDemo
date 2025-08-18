@@ -51,17 +51,25 @@ function getAllCargoPositions() {
         }
       })
     })
-    searchArrayForShow.value = sorted
+  } else {
+    ar.forEach((element) => {
+      if (catalogStore.categories[element]) {
+        Object.keys(catalogStore.categories[element].sub).forEach((key) => {
+          Object.keys(catalogStore.categories[element].sub[key].cargo).forEach((key2) => {
+            let short = catalogStore.categories[element].sub[key].cargo[key2]
+            if (i < 5 && !model.value) {
+              sorted.push(short)
+              i++
+            } else if (i < 5 && startsWithIgnoreCase(short.name, model.value)) {
+              sorted.push(short)
+              i++
+            }
+          })
+        })
+      }
+    })
   }
-  ar.forEach((element) => {
-    if (catalogStore.categories[element]) {
-      // Object.keys(catalogStore.categories[element].sub).forEach((key) => {
-      //   Object.keys(catalogStore.categories[element].sub).forEach((key) => {
-      //     console.log(catalogStore.categories[element].sub[key].cargo)
-      //   })
-      // })
-    }
-  })
+  searchArrayForShow.value = sorted
 }
 
 function setShortText() {
@@ -70,8 +78,7 @@ function setShortText() {
   } else return selectedCategory.value
 }
 // watch works directly on a ref
-watch(model, async (newModel) => {
-  console.log(newModel)
+watch(model, () => {
   getAllCargoPositions()
 })
 </script>
