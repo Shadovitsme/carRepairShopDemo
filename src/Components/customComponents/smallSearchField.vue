@@ -102,69 +102,38 @@ watch(model, () => {
 
 <template>
   <div :class="divStyle">
-    <input
-      @change="getAllCargoPositions()"
-      v-model="model"
-      placeholder="Поиск по товарам"
-      :style="{
-        'padding-left': width + 'px',
-      }"
-      :class="inputStyle"
-    />
+    <input @change="getAllCargoPositions()" v-model="model" placeholder="Поиск по товарам" :style="{
+      'padding-left': width + 'px',
+    }" :class="inputStyle" />
 
-    <cusotomButton
-      id="custom"
-      @click="
-        () => {
-          dropdowwnShow = !dropdowwnShow
-        }
-      "
-      v-if="props.big"
-      class="absolute left-0 w-[150px]"
-      color="blue"
-      :text="setShortText()"
-      :iconSecond="dropDownArrow"
-    >
+    <cusotomButton id="custom" @click="
+      () => {
+        dropdowwnShow = !dropdowwnShow
+      }
+    " v-if="props.big" class="absolute left-0 w-[150px]" color="blue" :text="setShortText()"
+      :iconSecond="dropDownArrow">
     </cusotomButton>
     <RouterLink :to="href">
-      <cusotomButton
-        v-if="props.big"
-        class="absolute tablet:visible tablet:inline-block hidden right-0 top-0 bottom-0"
-        :iconSecond="searchIcon"
-        color="black"
-        @click="test()"
-        text="Найти"
-      ></cusotomButton>
-      <IconButton
-        v-if="props.big"
-        class="absolute tablet:hidden visible inline-block right-0"
-        icon="arrowRight"
-        @click="test()"
-        color="black"
-      ></IconButton>
+      <cusotomButton v-if="props.big" class="absolute tablet:visible tablet:inline-block hidden right-0 top-0 bottom-0"
+        :iconSecond="searchIcon" color="black" @click="test()" text="Найти"></cusotomButton>
+      <IconButton v-if="props.big" class="absolute tablet:hidden visible inline-block right-0" icon="arrowRight"
+        @click="test()" color="black"></IconButton>
     </RouterLink>
 
-    <DropdownField
-      ref="myElement"
-      @selectCategory="
-        (item) => {
-          selectedCategory = item
-          getAllCargoPositions()
-          dropdowwnShow = false
-        }
-      "
-      :dataArr="props.dataAr"
-      v-if="dropdowwnShow"
-    ></DropdownField>
+    <DropdownField ref="myElement" @selectCategory="
+      (item) => {
+        selectedCategory = item
+        getAllCargoPositions()
+        dropdowwnShow = false
+      }
+    " :dataArr="props.dataAr" v-if="dropdowwnShow"></DropdownField>
     <button v-if="!props.big" class="absolute right-5 top-0 bottom-0 w-fit flex">
       <RouterLink class="my-auto" :to="href"> <img :src="searchIcon" /></RouterLink>
     </button>
     <div v-if="model" class="bg-gray-100 mt-2 py-4 z-10 relative px-5 rounded-[1.25rem]">
       <p v-for="item in searchArrayForShow" v-bind:key="item.article" class="mb-4">
-        <RouterLink
-          :to="'/cargo?data=' + item.article"
-          class="hover:underline button2 text-gray-700"
-        >
+        <RouterLink :to="'/cargo?data=' + item.article"
+          class="hove                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        r:underline button2 text-gray-700">
           {{ item.name }}
         </RouterLink>
       </p>
