@@ -63,9 +63,9 @@ switch (props.name) {
 }
 </script>
 <template>
-  <RouterLink :to="props.href">
+  <RouterLink class="z-0" :to="props.href">
     <div
-      class="w-38 relative tablet:w-[17.375rem] desktop:w-[20.875rem] h-full overflow-hidden rounded-[10px] bg-blue-100"
+      class="w-38 z-0 relative tablet:w-[17.375rem] desktop:w-[20.875rem] h-full overflow-hidden rounded-[10px] bg-blue-100"
     >
       <img
         class="w-full h-28.25 tablet:h-[12.375rem] object-cover"

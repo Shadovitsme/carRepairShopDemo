@@ -4,7 +4,7 @@ const props = defineProps(['categoryNames'])
 </script>
 
 <template>
-  <div v-if="props.categoryNames" class="flex w-full flex-wrap gap-5">
+  <div v-if="props.categoryNames" class="flex w-full z-0 flex-wrap gap-5">
     <categoryCard
       class="mx-auto"
       v-for="item in props.categoryNames"
