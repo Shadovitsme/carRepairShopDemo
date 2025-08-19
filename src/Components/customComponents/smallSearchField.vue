@@ -34,20 +34,33 @@ function startsWithIgnoreCase(str, searchString) {
   return str.toLowerCase().startsWith(searchString.toLowerCase())
 }
 
+function fillSearchArray(dataToSeartch, searchFieldValue, counter) {
+  let countItemsToShow = 5
+  if (counter < countItemsToShow && !searchFieldValue) {
+    return dataToSeartch
+  } else if (
+    counter < countItemsToShow &&
+    startsWithIgnoreCase(dataToSeartch.name, searchFieldValue)
+  ) {
+    return dataToSeartch
+  }
+  return false
+}
+
 function getAllCargoPositions() {
   let ar = catalogStore.with_description
   let sorted = []
-  let i = 0
+  // TODO требует рефакторинга
   if (selectedCategory.value != 'Категории') {
     Object.keys(catalogStore.categories[selectedCategory.value].sub).forEach((key) => {
-      let short = catalogStore.categories[selectedCategory.value].sub[key].cargo
-      Object.keys(short).forEach((shortKey) => {
-        if (i < 5 && !model.value) {
-          sorted.push(short[shortKey])
-          i++
-        } else if (i < 5 && startsWithIgnoreCase(short[shortKey].name, model.value)) {
-          sorted.push(short[shortKey])
-          i++
+      Object.keys(catalogStore.categories[selectedCategory.value].sub[key].cargo).forEach((shortKey) => {
+        let short = catalogStore.categories[selectedCategory.value].sub[key].cargo[shortKey]
+        let beside = fillSearchArray(short, model.value, sorted.length)
+        if (beside) {
+          sorted.push(beside)
+        }
+        if (sorted.length < 5) {
+          return sorted
         }
       })
     })
@@ -57,12 +70,12 @@ function getAllCargoPositions() {
         Object.keys(catalogStore.categories[element].sub).forEach((key) => {
           Object.keys(catalogStore.categories[element].sub[key].cargo).forEach((key2) => {
             let short = catalogStore.categories[element].sub[key].cargo[key2]
-            if (i < 5 && !model.value) {
-              sorted.push(short)
-              i++
-            } else if (i < 5 && startsWithIgnoreCase(short.name, model.value)) {
-              sorted.push(short)
-              i++
+            let beside = fillSearchArray(short, model.value, sorted.length)
+            if (beside) {
+              sorted.push(beside)
+            }
+            if (sorted.length < 5) {
+              return sorted
             }
           })
         })
@@ -85,69 +98,37 @@ watch(model, () => {
 
 <template>
   <div :class="divStyle">
-    <input
-      @change="getAllCargoPositions()"
-      v-model="model"
-      placeholder="Поиск по товарам"
-      :style="{
-        'padding-left': width + 'px',
-      }"
-      :class="inputStyle"
-    />
+    <input @change="getAllCargoPositions()" v-model="model" placeholder="Поиск по товарам" :style="{
+      'padding-left': width + 'px',
+    }" :class="inputStyle" />
 
-    <cusotomButton
-      id="custom"
-      @click="
-        () => {
-          dropdowwnShow = !dropdowwnShow
-        }
-      "
-      v-if="props.big"
-      class="absolute left-0 w-[150px]"
-      color="blue"
-      :text="setShortText()"
-      :iconSecond="dropDownArrow"
-    >
+    <cusotomButton id="custom" @click="
+      () => {
+        dropdowwnShow = !dropdowwnShow
+      }
+    " v-if="props.big" class="absolute left-0 w-[150px]" color="blue" :text="setShortText()"
+      :iconSecond="dropDownArrow">
     </cusotomButton>
     <RouterLink :to="href">
-      <cusotomButton
-        v-if="props.big"
-        class="absolute tablet:visible tablet:inline-block hidden right-0 top-0 bottom-0"
-        :iconSecond="searchIcon"
-        color="black"
-        @click="test()"
-        text="Найти"
-      ></cusotomButton>
-      <IconButton
-        v-if="props.big"
-        class="absolute tablet:hidden visible inline-block my-1 right-1"
-        icon="phone"
-        @click="test()"
-        color="black"
-      ></IconButton>
+      <cusotomButton v-if="props.big" class="absolute tablet:visible tablet:inline-block hidden right-0 top-0 bottom-0"
+        :iconSecond="searchIcon" color="black" @click="test()" text="Найти"></cusotomButton>
+      <IconButton v-if="props.big" class="absolute tablet:hidden visible inline-block my-1 right-1" icon="phone"
+        @click="test()" color="black"></IconButton>
     </RouterLink>
 
-    <DropdownField
-      ref="myElement"
-      @selectCategory="
-        (item) => {
-          selectedCategory = item
-          getAllCargoPositions()
-          dropdowwnShow = false
-        }
-      "
-      :dataArr="props.dataAr"
-      v-if="dropdowwnShow"
-    ></DropdownField>
+    <DropdownField ref="myElement" @selectCategory="
+      (item) => {
+        selectedCategory = item
+        getAllCargoPositions()
+        dropdowwnShow = false
+      }
+    " :dataArr="props.dataAr" v-if="dropdowwnShow"></DropdownField>
     <button v-if="!props.big" class="absolute right-5 mt-3.5">
       <RouterLink :to="href"> <img :src="searchIcon" /></RouterLink>
     </button>
     <div v-if="model" class="bg-gray-100 mt-2 py-4 px-5 rounded-[1.25rem]">
       <p v-for="item in searchArrayForShow" v-bind:key="item.article" class="mb-4">
-        <RouterLink
-          :to="'/cargo?data=' + item.article"
-          class="hover:underline button2 text-gray-700"
-        >
+        <RouterLink :to="'/cargo?data=' + item.article" class="hover:underline button2 text-gray-700">
           {{ item.name }}
         </RouterLink>
       </p>
