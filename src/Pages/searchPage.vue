@@ -5,7 +5,20 @@ import { ref } from 'vue'
 import cargoCard from '@/Components/customComponents/cargoCard.vue'
 import MobileNavbar from '@/Components/customComponents/mobileNavbar.vue'
 import SortPanel from '@/Components/customComponents/sortPanel.vue'
-import { getDb } from './ajaxes/db'
+import { useCatalogStore } from '@/store/catalog'
+import { useRoute } from 'vue-router'
+import { storeToRefs } from 'pinia'
+const catalogStore = useCatalogStore()
+const category = ref(
+  catalogStore.with_description.indexOf(useRoute().params.category) !== -1
+    ? useRoute().params.category
+    : 'Прочее',
+)
+const sub = ref(useRoute().params)
+console.log(sub)
+const categoryNames = storeToRefs(catalogStore).categories
+
+// TODO заменить на готовые схемы сортировки
 function alfabetSortAsc() {
   categoryNames.value = categoryNames.value.sort((a, b) => {
     if (a.name > b.name) {
@@ -44,14 +57,6 @@ function priceSortAsc() {
 }
 </script>
 
-<script>
-const categoryNames = ref()
-export default {
-  mounted() {
-    categoryNames.value = getDb()
-  },
-}
-</script>
 <template>
   <div class="w-full max-w-[1630px] mx-auto">
     <Header :mainPage="false"></Header>
