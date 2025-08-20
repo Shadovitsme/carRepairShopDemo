@@ -15,8 +15,55 @@ const category = ref(
     : 'Прочее',
 )
 const sub = ref(useRoute().params)
-console.log(sub)
-const categoryNames = storeToRefs(catalogStore).categories
+let categoryNames = storeToRefs(catalogStore).categories
+
+function startsWithIgnoreCase(str, searchString) {
+  return str.toLowerCase().startsWith(searchString.toLowerCase())
+}
+
+function fillSearchArray(dataToSeartch, searchFieldValue) {
+  if (!searchFieldValue) {
+    return dataToSeartch
+  } else if (startsWithIgnoreCase(dataToSeartch.name, searchFieldValue)) {
+    return dataToSeartch
+  }
+  return false
+}
+
+function getAllCargoPositions() {
+  let ar = catalogStore.with_description
+  let sorted = []
+  let selectCategory = sub.value.category
+  // TODO требует рефакторинга
+  if (selectCategory != 'Категории') {
+    Object.keys(catalogStore.categories[selectCategory].sub).forEach((key) => {
+      Object.keys(catalogStore.categories[selectCategory].sub[key].cargo).forEach((shortKey) => {
+        let short = catalogStore.categories[selectCategory].sub[key].cargo[shortKey]
+        let beside = fillSearchArray(short, sub.value.searchName)
+        if (beside) {
+          sorted.push(beside)
+        }
+      })
+    })
+  } else {
+    ar.forEach((element) => {
+      if (catalogStore.categories[element]) {
+        Object.keys(catalogStore.categories[element].sub).forEach((key) => {
+          Object.keys(catalogStore.categories[element].sub[key].cargo).forEach((key2) => {
+            let short = catalogStore.categories[element].sub[key].cargo[key2]
+            let beside = fillSearchArray(short, sub.value.searchName)
+            if (beside) {
+              sorted.push(beside)
+            }
+          })
+        })
+      }
+    })
+  }
+  searchArrayForShow.value = sorted
+}
+let searchArrayForShow = ref([])
+getAllCargoPositions()
 
 // TODO заменить на готовые схемы сортировки
 function alfabetSortAsc() {
@@ -70,9 +117,9 @@ function priceSortAsc() {
           @priceSortDesc="priceSortDesc()"
         ></SortPanel>
       </div>
-      <div v-if="categoryNames" class="grid grid-cols-4 gap-x-5 gap-y-5">
+      <div v-if="searchArrayForShow" class="grid grid-cols-4 gap-x-5 gap-y-5">
         <cargoCard
-          v-for="item in categoryNames"
+          v-for="item in searchArrayForShow"
           :key="item.article"
           :description="item.description"
           :price="item.price + ' ₽'"
