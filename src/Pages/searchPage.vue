@@ -1,21 +1,22 @@
 <script setup>
+import { ref } from 'vue'
+import { useCatalogStore } from '@/store/catalog'
+import { useRoute } from 'vue-router'
 import Header from '@/Components/multiComponents/HeaderComponent.vue'
 import Footer from '@/Components/multiComponents/FooterComponent.vue'
-import { ref } from 'vue'
 import cargoCard from '@/Components/customComponents/cargoCard.vue'
 import MobileNavbar from '@/Components/customComponents/mobileNavbar.vue'
 import SortPanel from '@/Components/customComponents/sortPanel.vue'
-import { useCatalogStore } from '@/store/catalog'
-import { useRoute } from 'vue-router'
-import { storeToRefs } from 'pinia'
+import alfabetSortAsc from '@/customFunctions/alfabetSortAsc'
+import alfabetSortDesc from '@/customFunctions/alfabetSortDesc'
+import priceSortDesc from '@/customFunctions/priceSortDesc'
+import priceSortAsc from '@/customFunctions/priceSortAsk'
+
+// variables
 const catalogStore = useCatalogStore()
-const category = ref(
-  catalogStore.with_description.indexOf(useRoute().params.category) !== -1
-    ? useRoute().params.category
-    : 'Прочее',
-)
 const sub = ref(useRoute().params)
-let categoryNames = storeToRefs(catalogStore).categories
+let searchArrayForShow = ref([])
+getAllCargoPositions()
 
 function startsWithIgnoreCase(str, searchString) {
   return str.toLowerCase().startsWith(searchString.toLowerCase())
@@ -29,6 +30,8 @@ function fillSearchArray(dataToSeartch, searchFieldValue) {
   }
   return false
 }
+
+// TODO придумать как избавиться от этих функций и вызывать готовые сразу на уровне темплейта
 
 function getAllCargoPositions() {
   let ar = catalogStore.with_description
@@ -62,45 +65,21 @@ function getAllCargoPositions() {
   }
   searchArrayForShow.value = sorted
 }
-let searchArrayForShow = ref([])
-getAllCargoPositions()
 
-// TODO заменить на готовые схемы сортировки
-function alfabetSortAsc() {
-  categoryNames.value = categoryNames.value.sort((a, b) => {
-    if (a.name > b.name) {
-      return 1
-    }
-    if (a.name == b.name) {
-      return 0
-    }
-    return -1
-  })
+function alfabetSortAscSearchPage() {
+  searchArrayForShow.value = alfabetSortAsc(searchArrayForShow.value, 'name')
 }
 
-function alfabetSortDesc() {
-  categoryNames.value = categoryNames.value.sort((a, b) => {
-    if (a.name < b.name) {
-      return 1
-    }
-    if (a.name === b.name) {
-      return 0
-    }
-
-    return -1
-  })
+function alfabetSortDescSearchPage() {
+  searchArrayForShow.value = alfabetSortDesc(searchArrayForShow.value, 'name')
 }
 
-function priceSortDesc() {
-  categoryNames.value = categoryNames.value.sort((a, b) => {
-    return Math.sign(a.price - b.price)
-  })
+function priceSortDescSearchPage() {
+  searchArrayForShow.value = priceSortDesc(searchArrayForShow.value)
 }
 
-function priceSortAsc() {
-  categoryNames.value = categoryNames.value.sort((a, b) => {
-    return -Math.sign(a.price - b.price)
-  })
+function priceSortAscSearchPage() {
+  searchArrayForShow.value = priceSortAsc(searchArrayForShow.value)
 }
 </script>
 
@@ -110,24 +89,15 @@ function priceSortAsc() {
     <div class="w-full h-full mb-[100px] bg-white pt-[37px] px-[118px] mb-">
       <div class="flex w-full h-[46px] mb-8 justify-between">
         <p class="H2 text-gray-800">Результаты поиска</p>
-        <SortPanel
-          @alfabetSortAsc="alfabetSortAsc()"
-          @alfabetSortDesc="alfabetSortDesc()"
-          @priceSortAsc="priceSortAsc()"
-          @priceSortDesc="priceSortDesc()"
-        ></SortPanel>
+        <SortPanel @alfabetSortAsc="alfabetSortAscSearchPage()" @alfabetSortDesc="alfabetSortDescSearchPage()"
+          @priceSortAsc="priceSortAscSearchPage()" @priceSortDesc="priceSortDescSearchPage()"></SortPanel>
       </div>
       <div v-if="searchArrayForShow" class="grid grid-cols-4 gap-x-5 gap-y-5">
-        <cargoCard
-          v-for="item in searchArrayForShow"
-          :key="item.article"
-          :description="item.description"
-          :price="item.price + ' ₽'"
-          :cargo-name="item.name"
-          :article="item.article"
-          :brand="item.brand"
-          :image="item.image + '/1.webp'"
-        ></cargoCard>
+        <cargoCard v-for="item in searchArrayForShow" :key="item.article"
+          :href="'/cargo/' + item.type + '/' + item.sub_type + '/' + item.article" :description="item.description"
+          :price="item.price + ' ₽'" :cargo-name="item.name" :article="item.article" :brand="item.brand"
+          :image="item.image + '/1.webp'">
+        </cargoCard>
       </div>
     </div>
     <MobileNavbar></MobileNavbar>
