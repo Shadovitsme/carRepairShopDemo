@@ -1360,29 +1360,6 @@ export function getDb() {
     },
 
     {
-      id: 76,
-      name: '3M Скотч-брайт',
-      brand: '',
-      graduation: '',
-      width: '153',
-      length: '228',
-      country: 'Великобритания',
-      price: 120.0,
-      color: 'Серый',
-      type: 'Абразив',
-      sub_type: 'СкотчБрайт',
-      in_package: 20,
-      description:
-        'Лист Скотч брайт FB серого цвета размерами 158 мм x 224 мм это универсальный в использовании материал. Чаще всего листы Ultra Fine используются на финишных этапах обработки, оставляет очень мелкую риску.',
-      article: '508000000',
-      image: '/catalog/Abrasive/Scotchbright/508081094/gray',
-      warranty: '',
-      size: '',
-      min_discount_quantity: 944,
-      discount_price: 81,
-    },
-
-    {
       id: 77,
       name: '3M TRIZACT',
       brand: '',

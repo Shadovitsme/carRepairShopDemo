@@ -13,6 +13,7 @@ import { rounded } from '@/customFunctions/rounded'
 import ModalWindowAddOrder from '@/Components/multiComponents/modalWindowAddOrder.vue'
 import FinalOrder from '@/Components/multiComponents/finalOrder.vue'
 import { getDb } from './ajaxes/db'
+import makeSubArrayForSort from '@/customFunctions/makeSubArrayForSort'
 
 let modalVisible = ref(false)
 function toggleModal() {
@@ -90,39 +91,29 @@ export default {
         result.push(cookieName)
       }
     }
-    const categoryNames = ref()
+    const categoryNames = ref(getDb())
 
     result.forEach((element) => {
       let counted = Number(getCookie(String(element)))
-      if (counted > 0) {
-        categoryNames.value = getDb()
-        let name = categoryNames.value[0].cargo[0].name
-        let img = categoryNames.value[0].cargo[0].image + '/1.webp'
-        let price = categoryNames.value[0].cargo[0].price
-        let characteristic = categoryNames.value[0].cargo[0].graduation
-        let manufacturer = categoryNames.value[0].cargo[0].brand
 
-        let minQuantityForDiscount = categoryNames.value[0].cargo[0].min_discount_quantity
-        let discountPrice = (price / 100) * categoryNames.value[0].cargo[0].discountPrice
+      if (counted) {
+        categoryNames.value.forEach((cargo) => {
+          if (element == cargo.article) {
+            console.log(cargo)
 
-        allCount.value = allCount.value + counted
-        summWithDiscount.value +=
-          counted >= minQuantityForDiscount ? price * counted - discountPrice * counted : 0
-        summWithoutDiscount.value += price * counted
-        currentSumm.value +=
-          counted < minQuantityForDiscount ? counted * price : counted * discountPrice
+            cargoResult.value.push(cargo)
+            let price = cargo.price
+            let minQuantityForDiscount = cargo.min_discount_quantity
+            let discountPrice = cargo.discount_price
 
-        cargoResult.value.push({
-          article: element,
-          img: img,
-          name: name,
-          picture: img,
-          price: price,
-          discountPrice: discountPrice,
-          characteristic: characteristic,
-          manufacturer: manufacturer,
-          count: counted,
-          minQuantityForDiscount: minQuantityForDiscount,
+            allCount.value = allCount.value + counted
+            summWithDiscount.value +=
+              counted >= minQuantityForDiscount ? price * counted - discountPrice * counted : 0
+            summWithoutDiscount.value += price * counted
+            currentSumm.value +=
+              counted < minQuantityForDiscount ? counted * price : counted * discountPrice
+            return
+          }
         })
       }
     })

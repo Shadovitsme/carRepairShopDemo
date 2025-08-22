@@ -89,14 +89,25 @@ function priceSortAscSearchPage() {
     <div class="w-full h-full mb-[100px] bg-white pt-[37px] px-[118px] mb-">
       <div class="flex w-full h-[46px] mb-8 justify-between">
         <p class="H2 text-gray-800">Результаты поиска</p>
-        <SortPanel @alfabetSortAsc="alfabetSortAscSearchPage()" @alfabetSortDesc="alfabetSortDescSearchPage()"
-          @priceSortAsc="priceSortAscSearchPage()" @priceSortDesc="priceSortDescSearchPage()"></SortPanel>
+        <SortPanel
+          @alfabetSortAsc="alfabetSortAscSearchPage()"
+          @alfabetSortDesc="alfabetSortDescSearchPage()"
+          @priceSortAsc="priceSortAscSearchPage()"
+          @priceSortDesc="priceSortDescSearchPage()"
+        ></SortPanel>
       </div>
       <div v-if="searchArrayForShow" class="grid grid-cols-4 gap-x-5 gap-y-5">
-        <cargoCard v-for="item in searchArrayForShow" :key="item.article"
-          :href="'/cargo/' + item.type + '/' + item.sub_type + '/' + item.article" :description="item.description"
-          :price="item.price + ' ₽'" :cargo-name="item.name" :article="item.article" :brand="item.brand"
-          :image="item.image + '/1.webp'">
+        <cargoCard
+          v-for="item in searchArrayForShow"
+          :key="item.article"
+          :href="'/cargo/' + item.type + '/' + item.sub_type + '/' + item.article"
+          :description="item.description"
+          :price="item.price + ' ₽'"
+          :cargo-name="item.name"
+          :article="item.article"
+          :brand="item.brand"
+          :image="item.image + '/1.webp'"
+        >
         </cargoCard>
       </div>
     </div>
