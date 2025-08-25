@@ -13,7 +13,8 @@ import { rounded } from '@/customFunctions/rounded'
 import ModalWindowAddOrder from '@/Components/multiComponents/modalWindowAddOrder.vue'
 import FinalOrder from '@/Components/multiComponents/finalOrder.vue'
 import { getDb } from './ajaxes/db'
-import makeSubArrayForSort from '@/customFunctions/makeSubArrayForSort'
+
+// TODO поменять в бд количество товара для скидки
 
 let modalVisible = ref(false)
 function toggleModal() {
@@ -45,18 +46,21 @@ function countSummWithoutDiscount() {
   summWithoutDiscount.value = 0
   currentSumm.value = 0
   let isAllChecked = true
+
   cargoResult.value.forEach((element) => {
     isAllChecked = isAllChecked && document.getElementById(element.article).checked
     let articleCount = Number(getCookie(element.article))
     if (articleCount > 0 && document.getElementById(element.article).checked) {
       allCount.value += articleCount
       summWithDiscount.value +=
-        element.minQuantityForDiscount <= articleCount ? element.discountPrice * articleCount : 0
+        element.min_discount_quantity <= articleCount ? element.discount_price * articleCount : 0
       summWithoutDiscount.value += element.price * articleCount
-      currentSumm.value +=
-        articleCount < element.minQuantityForDiscount
-          ? articleCount * element.price
-          : articleCount * element.discountPrice
+      if (articleCount < Number(element.min_discount_quantity)) {
+        currentSumm.value = currentSumm.value + articleCount * Number(element.price)
+      } else {
+        currentSumm.value = currentSumm.value + articleCount * Number(element.discount)
+      }
+      console.log(summWithDiscount.value)
     }
   })
   selectAll.value = isAllChecked
@@ -71,6 +75,10 @@ function openOrderResult() {
 let hidden = ref('')
 
 countSummWithoutDiscount()
+function reCountSummWhenChange() {
+  countSummWithoutDiscount()
+  return currentSumm.value
+}
 </script>
 
 <script>
@@ -99,19 +107,17 @@ export default {
       if (counted) {
         categoryNames.value.forEach((cargo) => {
           if (element == cargo.article) {
-            console.log(cargo)
-
             cargoResult.value.push(cargo)
             let price = cargo.price
-            let minQuantityForDiscount = cargo.min_discount_quantity
-            let discountPrice = cargo.discount_price
+            let min_discount_quantity = cargo.min_discount_quantity
+            let discount_price = cargo.discount_price
 
             allCount.value = allCount.value + counted
             summWithDiscount.value +=
-              counted >= minQuantityForDiscount ? price * counted - discountPrice * counted : 0
+              counted >= min_discount_quantity ? price * counted - discount_price * counted : 0
             summWithoutDiscount.value += price * counted
             currentSumm.value +=
-              counted < minQuantityForDiscount ? counted * price : counted * discountPrice
+              counted < min_discount_quantity ? counted * price : counted * discount_price
             return
           }
         })
@@ -126,37 +132,25 @@ export default {
 
   <div v-if="!Final">
     <!-- для пустой корзины -->
-    <div
-      v-if="!checkCookieWithoutLetters()"
-      class="bg-blue-100 px-[42px] py-24 laptop:py-[152.5px] desktop:py-20 flex"
-    >
+    <div v-if="!checkCookieWithoutLetters()" class="bg-blue-100 px-[42px] py-24 laptop:py-[152.5px] desktop:py-20 flex">
       <div class="w-[276px] tablet:w-83.5 m-auto laptop:w-fit">
         <article>
           <p class="H3 text-center text-gray-800 laptop:font-bold">В корзине пока пусто</p>
-          <p
-            class="p1 text-center my-5 tablet:w-[276px] mx-auto text-gray-800 laptop:w-96 laptop:my-10"
-          >
+          <p class="p1 text-center my-5 tablet:w-[276px] mx-auto text-gray-800 laptop:w-96 laptop:my-10">
             Загляните в каталог, чтобы выбрать товары или найдите нужное в поиске
           </p>
         </article>
         <!-- TODO менять надпись на кнопке при изменении размера экрана -->
         <div class="w-full flex justify-center">
           <RouterLink to="/categoryCatalog">
-            <CusotomButton
-              class="w-full laptop:w-[137px]"
-              color="blue"
-              text="В каталог"
-            ></CusotomButton>
+            <CusotomButton class="w-full laptop:w-[137px]" color="blue" text="В каталог"></CusotomButton>
           </RouterLink>
         </div>
       </div>
     </div>
     <div class="desktop:w-full desktop:flex desktop:px-[117px]">
       <div class="w-full">
-        <div
-          class="px-4.5 desktop:px-0 laptop:px-8 pb-36 desktop:pb-0"
-          v-if="checkCookieWithoutLetters()"
-        >
+        <div class="px-4.5 desktop:px-0 laptop:px-8 pb-36 desktop:pb-0" v-if="checkCookieWithoutLetters()">
           <div class="flex my-4">
             <p class="H1 text-gray-800 mr-1">Корзина</p>
             <p class="align-top label2 text-gray-600">
@@ -168,41 +162,23 @@ export default {
             <p class="p2 text-gray-900">Выбрать всё</p>
           </div>
           <div class="">
-            <BusketItemCard
-              @click="countSummWithoutDiscount()"
-              v-for="item in cargoResult"
-              :key="item.article"
-              :checked="true"
-              :article="item.article"
-              :name="item.name"
-              :characterisic="item.characteristic"
-              :manufacturer="item.manufacturer"
-              :price="item.price"
-              :discountPrice="item.discountPrice"
-              :minQuantityForDiscount="item.minQuantityForDiscount"
-              :image="item.img"
-            ></BusketItemCard>
+            <BusketItemCard @click="countSummWithoutDiscount()" v-for="item in cargoResult" :key="item.article"
+              :checked="true" :article="item.article" :name="item.name" :characterisic="item.characteristic"
+              :manufacturer="item.manufacturer" :price="item.price" :discount_price="item.discount_price"
+              :min_discount_quantity="item.min_discount_quantity" :image="item.img"></BusketItemCard>
           </div>
         </div>
       </div>
-      <div
-        v-if="checkCookieWithoutLetters()"
-        class="laptop:px-8 laptop:w-full desktop:px-0 desktop:w-fit desktop:ml-20"
-      >
+      <div v-if="checkCookieWithoutLetters()"
+        class="laptop:px-8 laptop:w-full desktop:px-0 desktop:w-fit desktop:ml-20">
         <!-- TODO скидка неверно считается исправить -->
-        <BusketFinalPriceCard
-          @openModal="toggleModal"
-          :summ="rounded(currentSumm)"
-          :discount="rounded(summWithDiscount)"
-          :summWithoutDiscount="rounded(summWithoutDiscount)"
-          :cargo-counted="allCount"
-        ></BusketFinalPriceCard>
+        <BusketFinalPriceCard @openModal="toggleModal" :summ="rounded(currentSumm)"
+          :discount="rounded(summWithDiscount)" :summWithoutDiscount="rounded(summWithoutDiscount)"
+          :cargo-counted="allCount"></BusketFinalPriceCard>
       </div>
     </div>
-    <div
-      class="py-4 px-4.5 laptop:px-8 desktop:px-29.25 laptop:py-10 desktop:py-20 tv:px-40"
-      v-if="!checkCookieWithoutLetters()"
-    >
+    <div class="py-4 px-4.5 laptop:px-8 desktop:px-29.25 laptop:py-10 desktop:py-20 tv:px-40"
+      v-if="!checkCookieWithoutLetters()">
       <p class="my-auto H4 text-gray-800 mb-4 font-bold desktop:mb-10">
         Возможно, для вас актуальны
       </p>
@@ -211,24 +187,11 @@ export default {
   </div>
   <mobileNavbar></mobileNavbar>
 
-  <div
-    v-if="modalVisible"
-    class="fixed top-0 bottom-0 left-0 right-0 backdrop-brightness-[0.8] z-30 flex"
-  >
-    <ModalWindowAddOrder
-      :cargoResult="cargoResult"
-      @closeModal="toggleModal"
-      @openOrderResult="openOrderResult"
-    >
+  <div v-if="modalVisible" class="fixed top-0 bottom-0 left-0 right-0 backdrop-brightness-[0.8] z-30 flex">
+    <ModalWindowAddOrder :cargoResult="cargoResult" @closeModal="toggleModal" @openOrderResult="openOrderResult">
     </ModalWindowAddOrder>
   </div>
-  <FinalOrder
-    :cargo-array="cargoResult"
-    :cargo-count="allCount"
-    :discount="rounded(summWithDiscount)"
-    :summWithoutDiscount="rounded(summWithoutDiscount)"
-    :amount="rounded(currentSumm)"
-    v-if="Final"
-  ></FinalOrder>
+  <FinalOrder :cargo-array="cargoResult" :cargo-count="allCount" :discount="rounded(summWithDiscount)"
+    :summWithoutDiscount="rounded(summWithoutDiscount)" :amount="rounded(currentSumm)" v-if="Final"></FinalOrder>
   <Footer class="hidden laptop:block"></Footer>
 </template>
