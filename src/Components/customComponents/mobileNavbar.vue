@@ -12,6 +12,7 @@ function checkCookieWithoutLetters() {
     }
   }
 }
+// TODO та же избыточная херь есть и в headerBusketIcon вынести функцию проверки в отдельный фаил
 checkCookieWithoutLetters()
 </script>
 <template>

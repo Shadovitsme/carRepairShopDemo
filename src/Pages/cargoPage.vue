@@ -261,13 +261,13 @@ watch(counted, (newValue) => {
           />
 
           <div v-if="!toBusk" class="tablet:flex justify-between w-full">
-            <RouterLink href="/busket">
+            <a href="/busket">
               <cusotomButton
                 color="blue"
                 text="Перейти в корзину"
                 class="tablet:mr-2 w-full mb-3 tablet:mb-0"
               />
-            </RouterLink>
+            </a>
 
             <div class="flex justify-between">
               <iconButton icon="-" color="black" @click="RemoveOne" class="my-auto"></iconButton>

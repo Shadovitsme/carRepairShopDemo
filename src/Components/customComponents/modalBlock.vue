@@ -25,6 +25,8 @@ const phoneNumber = ref('')
       class="mb-5"
       placeholder="Введите ваш номер"
     ></customInput>
+    <!-- TODO сделать открытие модалки по клику -->
+    <!-- TODO сделать отображение случайных картинок -->
     <customButton class="w-full" text="Отправить заявку" color="blue" :large="true" />
     <div class="flex w-full justify-center mt-1 tablet:mt-2.5">
       <div class="flex">

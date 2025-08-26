@@ -39,9 +39,10 @@ function removeItem() {
       >
         <RouterLink class="desktop:w-full" :to="'cargo?data=' + props.article">
           <img
-            class="w-[90px] h-[90px] tablet:w-[110px] tablet:h-[110px] desktop:w-full"
-            :src="props.image"
-        /></RouterLink>
+            class="w-[90px] shrink-0 bg-cover desctop:h-full desktop:w-full"
+            src="https://www.zapcar.ru/upload/iblock/c25/kcx3rbgrf701zkufbuxgt9a3rff31cbr/1646407335_11_kartinkin_net_p_avtozapchasti_kartinki_13.png"
+          />
+        </RouterLink>
       </div>
 
       <article class="ml-4 relative tablet:w-full">
